@@ -42,12 +42,16 @@ public class PanelDirectoresAgregar extends javax.swing.JPanel {
 
         jLabel1.setText("jLabel1");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("ingrese la id del dirrector:");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Nombre:");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Nacionaldad:");
 
+        BtnAgregarDirector.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BtnAgregarDirector.setText("Agregar Director");
         BtnAgregarDirector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,10 +71,10 @@ public class PanelDirectoresAgregar extends javax.swing.JPanel {
                         .addComponent(jLabel3)
                         .addComponent(jLabel2)
                         .addComponent(jLabel4)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(txtNombre)
                         .addComponent(txtIdDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtNacionalidad)))
-                .addContainerGap(492, Short.MAX_VALUE))
+                .addContainerGap(486, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,7 +93,7 @@ public class PanelDirectoresAgregar extends javax.swing.JPanel {
                 .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
                 .addComponent(BtnAgregarDirector)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

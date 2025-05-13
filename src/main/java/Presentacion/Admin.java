@@ -165,6 +165,11 @@ public class Admin extends javax.swing.JFrame {
 
         editar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         editar.setText("Editar");
+        editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActionPerformed(evt);
+            }
+        });
         jMenu1.add(editar);
         jMenu1.add(jSeparator2);
 
@@ -378,12 +383,24 @@ public class Admin extends javax.swing.JFrame {
 
     PanelActualizable.removeAll();
 
-    PanelGenerosAgregar generosPanel = new PanelGenerosAgregar(); 
+    agregarGeneroPanel generosPanel = new agregarGeneroPanel(); 
     PanelActualizable.add(generosPanel, java.awt.BorderLayout.CENTER);
 
     PanelActualizable.revalidate();
     PanelActualizable.repaint();
     }//GEN-LAST:event_agregarGeneroActionPerformed
+
+    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
+          if (PanelActualizable == null) {
+            System.out.println("panel no inicializado");
+            return;
+        }
+        PanelActualizable.removeAll();
+        PanelPeliculaActualizar actualizar = new  PanelPeliculaActualizar();
+        PanelActualizable.add(actualizar, java.awt.BorderLayout.CENTER);
+        PanelActualizable.revalidate();
+        PanelActualizable.repaint();
+    }//GEN-LAST:event_editarActionPerformed
 
     /**
      * @param args the command line arguments
