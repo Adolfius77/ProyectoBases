@@ -4,11 +4,15 @@
  */
 package Presentacion;
 
+import DTOS.generoDTO;
+import Persistencia.GeneroDAO;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author USER
  */
-public class PanelGenerosAgregar extends javax.swing.JFrame {
+public class PanelGenerosAgregar  extends javax.swing.JFrame {
 
     /**
      * Creates new form PanelGeneros
@@ -26,21 +30,87 @@ public class PanelGenerosAgregar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtIdGenero = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        btnAgregarGenero = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("ingrese el id del genero:");
+
+        jLabel2.setText("Ingrese el nombre: ");
+
+        btnAgregarGenero.setText("Agregar Genero");
+        btnAgregarGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarGeneroActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAgregarGenero)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(txtIdGenero, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                    .addComponent(txtNombre))
+                .addContainerGap(410, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtIdGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(btnAgregarGenero)
+                .addContainerGap(171, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGeneroActionPerformed
+       String idGenero = txtIdGenero.getText();
+       String nombre = txtNombre.getText();
+       
+        if (!idGenero.isEmpty() && nombre.isEmpty()) {
+            generoDTO nuevoGenero = new generoDTO(0, nombre);
+            GeneroDAO agregarGeneroDAO = new GeneroDAO();
+            
+            if (agregarGeneroDAO.agregarGenero(nuevoGenero)) {
+                JOptionPane.showMessageDialog(this, "genero agregado correctamente");
+                txtIdGenero.setText("");
+                txtNombre.setText("");
+            }else{
+                JOptionPane.showMessageDialog(this, "error al agregar genero");
+            }
+        }
+    }//GEN-LAST:event_btnAgregarGeneroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +149,11 @@ public class PanelGenerosAgregar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarGenero;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtIdGenero;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

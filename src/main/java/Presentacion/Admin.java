@@ -14,11 +14,12 @@ public class Admin extends javax.swing.JFrame {
      * Creates new form Admin
      */
     public Admin() {
-      
+
         initComponents();
-       
+        PanelActualizable.setLayout(new java.awt.BorderLayout());
+
         setTitle("Administrador");
-         setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -73,7 +74,7 @@ public class Admin extends javax.swing.JFrame {
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem13 = new javax.swing.JMenuItem();
+        agregarGenero = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
         jSeparator10 = new javax.swing.JPopupMenu.Separator();
@@ -233,6 +234,11 @@ public class Admin extends javax.swing.JFrame {
 
         jMenuItem10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jMenuItem10.setText("Añadir");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem10);
         jMenu4.add(jSeparator7);
 
@@ -255,9 +261,14 @@ public class Admin extends javax.swing.JFrame {
         jMenu5.setBackground(new java.awt.Color(153, 0, 0));
         jMenu5.setText("Gestión de Géneros");
 
-        jMenuItem13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem13.setText("Añadir");
-        jMenu5.add(jMenuItem13);
+        agregarGenero.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        agregarGenero.setText("Añadir");
+        agregarGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarGeneroActionPerformed(evt);
+            }
+        });
+        jMenu5.add(agregarGenero);
         jMenu5.add(jSeparator9);
 
         jMenuItem14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -288,21 +299,17 @@ public class Admin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AñadirActionPerformed
-      
-        if(PanelActualizable == null){
-           System.out.println("panel no inicializado");
-           return;
-       }
-        
-        if (PanelActualizable.getLayout() == null || !(PanelActualizable.getLayout() instanceof java.awt.FlowLayout)) {
-            PanelActualizable.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15)); // Espaciado
+
+        if (PanelActualizable == null) {
+            System.out.println("panel no inicializado");
+            return;
         }
-        
+        PanelActualizable.removeAll();
         PanelPeliculaAgregar pelicula = new PanelPeliculaAgregar();
-        PanelActualizable.add(pelicula);
+        PanelActualizable.add(pelicula, java.awt.BorderLayout.CENTER);
         PanelActualizable.revalidate();
         PanelActualizable.repaint();
-        
+
     }//GEN-LAST:event_AñadirActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -318,27 +325,65 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        ActoresAgregar actor = new ActoresAgregar();
-        actor.setVisible(true);
-        
+        if (PanelActualizable == null) {
+            System.out.println("panel no inicializado");
+            return;
+        }
+
+        PanelActualizable.removeAll();
+
+        PanelDirectoresAgregar dirrector = new PanelDirectoresAgregar();
+        PanelActualizable.add(dirrector, java.awt.BorderLayout.CENTER);
+
+        PanelActualizable.repaint();
+        PanelActualizable.revalidate();
+
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        if(PanelActualizable == null){
-           System.out.println("panel no inicializado");
-           return;
-       }
-        
-        if (PanelActualizable.getLayout() == null || !(PanelActualizable.getLayout() instanceof java.awt.FlowLayout)) {
-            PanelActualizable.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15)); // Espaciado
+        if (PanelActualizable == null) {
+            System.out.println("panel no inicializado");
+            return;
         }
-        
-       PanelProductoraAgregar productora = new PanelProductoraAgregar();
-        PanelActualizable.add(productora);
-        
+
+        PanelActualizable.removeAll();
+
+        PanelProductoraAgregar productora = new PanelProductoraAgregar();
+        PanelActualizable.add(productora, java.awt.BorderLayout.CENTER);
+
         PanelActualizable.repaint();
-       PanelActualizable.revalidate();
+        PanelActualizable.revalidate();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        if (PanelActualizable == null) {
+            System.out.println("panel no inicializado");
+            return;
+        }
+
+        PanelActualizable.removeAll();
+
+        ActoresAgregar actor = new ActoresAgregar();
+        PanelActualizable.add(actor, java.awt.BorderLayout.CENTER);
+
+        PanelActualizable.repaint();
+        PanelActualizable.revalidate();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void agregarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarGeneroActionPerformed
+        if (PanelActualizable == null) {
+        System.out.println("PanelActualizable no inicializado");
+        return;
+    }
+
+    PanelActualizable.removeAll();
+
+    PanelGenerosAgregar generosPanel = new PanelGenerosAgregar(); 
+    PanelActualizable.add(generosPanel, java.awt.BorderLayout.CENTER);
+
+    PanelActualizable.revalidate();
+    PanelActualizable.repaint();
+    }//GEN-LAST:event_agregarGeneroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,6 +423,7 @@ public class Admin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Añadir;
     private javax.swing.JPanel PanelActualizable;
+    private javax.swing.JMenuItem agregarGenero;
     private javax.swing.JMenuItem editar;
     private javax.swing.JMenuItem eliminar;
     private javax.swing.Box.Filler filler1;
@@ -400,7 +446,6 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem4;

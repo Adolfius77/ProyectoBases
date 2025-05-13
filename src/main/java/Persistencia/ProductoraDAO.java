@@ -53,9 +53,11 @@ public class ProductoraDAO {
         boolean resultado = false;
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO productora (nombre,pais) VALUES(?,?)";
+            String sql = "INSERT INTO productora (nombre, pais) VALUES (?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, productora.getNombre());
+            pstmt.setString(2, productora.getPais());
+
             int filasAfectadas = pstmt.executeUpdate();
             if (filasAfectadas > 0) {
                 resultado = true;
@@ -68,6 +70,7 @@ public class ProductoraDAO {
                 if (pstmt != null) {
                     pstmt.close();
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -133,7 +136,6 @@ public class ProductoraDAO {
         return resultado;
     }
 
-   
 //    public List<productoraDTO> obtenerTodasProductoras() {
 //        List<productoraDTO> productoras = new ArrayList<>();
 //        Connection conn = null;

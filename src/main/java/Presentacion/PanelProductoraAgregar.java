@@ -112,25 +112,30 @@ public class PanelProductoraAgregar extends javax.swing.JPanel {
     }//GEN-LAST:event_txtPaisActionPerformed
 
     private void BtnAgregarProductoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarProductoraActionPerformed
-       String idPelicula = txtIDproductora.getText();
-       String paisOrigen = txtPais.getText();
-       String nombre = txtNombre.getText();
-       
-        if (!idPelicula.isEmpty() && !paisOrigen.isEmpty() && !nombre.isEmpty()) {
+        String idPelicula = txtIDproductora.getText(); 
+        String paisOrigen = txtPais.getText();
+        String nombre = txtNombre.getText();
+
+        if (!idPelicula.isEmpty() && !paisOrigen.isEmpty() && !nombre.isEmpty()) { 
             try {
-                productoraDTO nuevaProductora = new productoraDTO(0, nombre, nombre);
-                ProductoraDAO agregarProductora = new ProductoraDAO();
-                if (agregarProductora.agregarProductora(nuevaProductora)){
-                    JOptionPane.showMessageDialog(this, "productora agregada correctamente");
+                
+                productoraDTO nuevaProductora = new productoraDTO(0, nombre, paisOrigen); 
+
+                ProductoraDAO agregarProductoraDAO = new ProductoraDAO(); 
+                if (agregarProductoraDAO.agregarProductora(nuevaProductora)) { 
+                    JOptionPane.showMessageDialog(this, "Productora agregada correctamente");
                     txtIDproductora.setText("");
                     txtNombre.setText("");
                     txtPais.setText("");
-                }else{
-                    JOptionPane.showMessageDialog(this,"ingrese correctamente los datos");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al agregar la productora. Verifique los datos o la consola para más detalles.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos (nombre y país son requeridos).");
         }
     }//GEN-LAST:event_BtnAgregarProductoraActionPerformed
 

@@ -23,11 +23,12 @@ public class directoresDAO {
         boolean resultado = false;
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO dirrector(nombre,nacionalidad) VALUES(?,?)";
+
+            String sql = "INSERT INTO director (nombre, nacionalidad) VALUES (?, ?)"; // CORREGIDO a "director"
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dirrector.getNombre());
             pstmt.setString(2, dirrector.getNacionalidad());
-            int filasAfectadas = pstmt.executeUpdate();
+            int filasAfectadas = pstmt.executeUpdate(); // Esta es la línea 30 según tu traza
             if (filasAfectadas > 0) {
                 resultado = true;
             }
@@ -52,7 +53,8 @@ public class directoresDAO {
         boolean resultado = false;
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "UPDATE director SET nombre = ? ,nacionalidad = ? WHERE id_director=?";
+
+            String sql = "UPDATE director SET nombre = ?, nacionalidad = ? WHERE id_director = ?"; // Nombre de tabla "director" es correcto
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dirrector.getNombre());
             pstmt.setString(2, dirrector.getNacionalidad());
@@ -74,16 +76,18 @@ public class directoresDAO {
         }
         return resultado;
     }
+
     // eliminar director
-    public boolean eliminar(dirrectorDTO director){
+   public boolean eliminar(dirrectorDTO directorDTOobj){ 
     Connection conn = null;
         PreparedStatement pstmt = null;
         boolean resultado = false;
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM director WHERE id_director = ?";
+           
+            String sql = "DELETE FROM director WHERE id_director = ?"; 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, director.getIdDirector());
+            pstmt.setInt(1, directorDTOobj.getIdDirector()); 
             int filasAfectadas = pstmt.executeUpdate();
             if (filasAfectadas > 0) {
                 resultado = true;
