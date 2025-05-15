@@ -130,11 +130,11 @@ private void limpiarCampos() {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
+        btnInicio = new javax.swing.JButton();
+        btnProdu = new javax.swing.JButton();
+        btnGenero = new javax.swing.JButton();
+        btnPeli = new javax.swing.JButton();
+        btnActores = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -326,25 +326,50 @@ private void limpiarCampos() {
         jPanel7.setBackground(new java.awt.Color(153, 0, 0));
         jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton11.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/inicio (2).png"))); // NOI18N
-        jButton11.setText("Inicio");
+        btnInicio.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
+        btnInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/inicio (2).png"))); // NOI18N
+        btnInicio.setText("Inicio");
+        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioActionPerformed(evt);
+            }
+        });
 
-        jButton12.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
-        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/productora (2).png"))); // NOI18N
-        jButton12.setText("Productora");
+        btnProdu.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
+        btnProdu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/productora (2).png"))); // NOI18N
+        btnProdu.setText("Productora");
+        btnProdu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProduActionPerformed(evt);
+            }
+        });
 
-        jButton13.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
-        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/genero (2).png"))); // NOI18N
-        jButton13.setText("Genero");
+        btnGenero.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
+        btnGenero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/genero (2).png"))); // NOI18N
+        btnGenero.setText("Genero");
+        btnGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGeneroActionPerformed(evt);
+            }
+        });
 
-        jButton14.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
-        jButton14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/director (3).png"))); // NOI18N
-        jButton14.setText("Dirrectores");
+        btnPeli.setFont(new java.awt.Font("Comic Sans MS", 3, 14)); // NOI18N
+        btnPeli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar imagen (2).png"))); // NOI18N
+        btnPeli.setText("peliculas");
+        btnPeli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPeliActionPerformed(evt);
+            }
+        });
 
-        jButton15.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jButton15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actor (3).png"))); // NOI18N
-        jButton15.setText("Actores");
+        btnActores.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnActores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actor (3).png"))); // NOI18N
+        btnActores.setText("Actores");
+        btnActores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActoresActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -352,15 +377,15 @@ private void limpiarCampos() {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addComponent(jButton11)
+                .addComponent(btnInicio)
                 .addGap(18, 18, 18)
-                .addComponent(jButton12)
+                .addComponent(btnProdu)
                 .addGap(26, 26, 26)
-                .addComponent(jButton13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton14)
-                .addGap(33, 33, 33)
-                .addComponent(jButton15)
+                .addComponent(btnGenero)
+                .addGap(18, 18, 18)
+                .addComponent(btnPeli)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(btnActores)
                 .addGap(54, 54, 54))
         );
         jPanel7Layout.setVerticalGroup(
@@ -368,11 +393,11 @@ private void limpiarCampos() {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton14)
-                    .addComponent(jButton15)
-                    .addComponent(jButton13)
-                    .addComponent(jButton12)
-                    .addComponent(jButton11))
+                    .addComponent(btnPeli)
+                    .addComponent(btnActores)
+                    .addComponent(btnGenero)
+                    .addComponent(btnProdu)
+                    .addComponent(btnInicio))
                 .addGap(14, 14, 14))
         );
 
@@ -395,8 +420,8 @@ private void limpiarCampos() {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(241, 241, 241)
                         .addComponent(jLabel9)))
-                .addContainerGap(29, Short.MAX_VALUE))
-            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -559,6 +584,36 @@ private void limpiarCampos() {
         
     }//GEN-LAST:event_BtnBuscarActionPerformed
 
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+      GUIAdminInicio ini = new GUIAdminInicio();
+      ini.setVisible(true);
+      this.dispose();
+    }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void btnProduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProduActionPerformed
+       GUIGestionProductora produ = new GUIGestionProductora();
+       produ.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_btnProduActionPerformed
+
+    private void btnGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneroActionPerformed
+        GUIGestionGenero gene = new GUIGestionGenero();
+        gene.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnGeneroActionPerformed
+
+    private void btnPeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPeliActionPerformed
+        GUIGestionPeliculas peli = new GUIGestionPeliculas();
+        peli.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPeliActionPerformed
+
+    private void btnActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActoresActionPerformed
+       GUIGestionActores act = new GUIGestionActores();
+       act.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_btnActoresActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -600,11 +655,11 @@ private void limpiarCampos() {
     private javax.swing.JButton BtnBuscar;
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnModificar;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
+    private javax.swing.JButton btnActores;
+    private javax.swing.JButton btnGenero;
+    private javax.swing.JButton btnInicio;
+    private javax.swing.JButton btnPeli;
+    private javax.swing.JButton btnProdu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
