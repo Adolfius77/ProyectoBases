@@ -1,146 +1,244 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
 
 import ConexionBD.DatabaseConnection;
-import DTOS.generoDTO;
+import DTOS.generoDTO; 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeneroDAO {
 
     public boolean agregarGenero(generoDTO genero) {
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        CallableStatement cstmt = null;
         boolean resultado = false;
+        String sql = "{CALL sp_agregar_genero(?, ?)}";
 
         try {
             conn = DatabaseConnection.getConnection();
-            if (conn != null) {
-                String sql = "INSERT INTO genero (nombre) VALUES (?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, genero.getNombre());
-
-                int filasAfectadas = pstmt.executeUpdate();
-                if (filasAfectadas > 0) {
-                    resultado = true;
-                    System.out.println("Género agregado correctamente.");
-                } else {
-                    System.out.println("No se pudo agregar el género.");
-                }
-            } else {
-                System.out.println("Error: No se pudo obtener la conexión a la base de datos.");
+            if (conn == null) {
+                System.err.println("Error: No se pudo obtener la conexión (agregarGenero).");
+                return false;
             }
+            cstmt = conn.prepareCall(sql);
+            cstmt.setString(1, genero.getNombre());
+            cstmt.registerOutParameter(2, Types.INTEGER); 
+            cstmt.execute();
+            int nuevoId = cstmt.getInt(2);
 
+            if (nuevoId > 0) {
+                genero.setIdGenero(nuevoId);
+                resultado = true;
+                System.out.println("Género agregado con ID: " + nuevoId);
+            } else {
+                 System.out.println("No se pudo agregar el género.");
+            }
         } catch (SQLException e) {
-            System.err.println("Error al agregar el género: " + e.getMessage());
+            System.err.println("Error SQL en agregarGenero: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (cstmt != null) cstmt.close();
             } catch (SQLException e) {
-                System.err.println("Error al cerrar el PreparedStatement: " + e.getMessage());
+                e.printStackTrace();
             }
         }
-
         return resultado;
     }
 
-    public boolean obtenerGeneroPorId(generoDTO genero) {
+    public generoDTO obtenerGeneroPorId(int idGenero) {
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        CallableStatement cstmt = null;
         ResultSet rs = null;
-        boolean resultado = false;
+        generoDTO genero = null;
+        String sql = "{CALL sp_obtener_genero_por_id(?)}";
 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "SELECT id_genero, nombre FROM genero WHERE id_genero = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, genero.getIdGenero());
-
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                genero.setNombre(rs.getString("nombre"));
-                resultado = true;
+            if (conn == null) {
+                System.err.println("Error: No se pudo obtener la conexión (obtenerGeneroPorId).");
+                return null;
             }
-
+            cstmt = conn.prepareCall(sql);
+            cstmt.setInt(1, idGenero);
+            
+            boolean hadResults = cstmt.execute();
+            if (hadResults) {
+                rs = cstmt.getResultSet();
+                if (rs.next()) {
+                    genero = new generoDTO(
+                        rs.getInt("id_genero"),
+                        rs.getString("nombre")
+                    );
+                }
+            }
         } catch (SQLException e) {
-            System.err.println("Error al obtener el género: " + e.getMessage());
+            System.err.println("Error SQL en obtenerGeneroPorId: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
+                if (cstmt != null) cstmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        return genero;
+    }
+    
+    public List<generoDTO> obtenerTodosLosGeneros() {
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        List<generoDTO> listaGeneros = new ArrayList<>();
+        String sql = "{CALL sp_obtener_todos_los_generos()}";
 
-        return resultado;
+        try {
+            conn = DatabaseConnection.getConnection();
+            if (conn == null) {
+                System.err.println("Error: No se pudo obtener la conexión (obtenerTodosLosGeneros).");
+                return listaGeneros; // Devuelve lista vacía
+            }
+            cstmt = conn.prepareCall(sql);
+            boolean hadResults = cstmt.execute();
+
+            if (hadResults) {
+                rs = cstmt.getResultSet();
+                while (rs.next()) {
+                    generoDTO genero = new generoDTO(
+                        rs.getInt("id_genero"),
+                        rs.getString("nombre")
+                    );
+                    listaGeneros.add(genero);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQL en obtenerTodosLosGeneros: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (cstmt != null) cstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return listaGeneros;
     }
 
     public boolean actualizarGenero(generoDTO genero) {
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        CallableStatement cstmt = null;
         boolean resultado = false;
+        String sql = "{CALL sp_actualizar_genero(?, ?)}";
 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "UPDATE genero SET nombre = ? WHERE id_genero = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, genero.getNombre());
-            pstmt.setInt(2, genero.getIdGenero());
+            if (conn == null) {
+                System.err.println("Error: No se pudo obtener la conexión (actualizarGenero).");
+                return false;
+            }
+            cstmt = conn.prepareCall(sql);
+            cstmt.setInt(1, genero.getIdGenero());
+            cstmt.setString(2, genero.getNombre());
 
-            int filasAfectadas = pstmt.executeUpdate();
+            int filasAfectadas = cstmt.executeUpdate(); 
             if (filasAfectadas > 0) {
                 resultado = true;
+                System.out.println("Género actualizado con ID: " + genero.getIdGenero());
+            } else {
+                System.out.println("No se actualizó el género (ID no encontrado o nombre igual).");
             }
-
         } catch (SQLException e) {
-            System.err.println("Error al actualizar el género: " + e.getMessage());
+            System.err.println("Error SQL en actualizarGenero: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (cstmt != null) cstmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
         return resultado;
     }
 
-    public boolean eliminarGenero(generoDTO genero) {
+    public boolean eliminarGenero(int idGenero) {
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        CallableStatement cstmt = null;
         boolean resultado = false;
+        String sql = "{CALL sp_eliminar_genero(?)}";
 
         try {
             conn = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM genero WHERE id_genero = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, genero.getIdGenero());
+            if (conn == null) {
+                System.err.println("Error: No se pudo obtener la conexión (eliminarGenero).");
+                return false;
+            }
+            cstmt = conn.prepareCall(sql);
+            cstmt.setInt(1, idGenero);
 
-            int filasAfectadas = pstmt.executeUpdate();
+            int filasAfectadas = cstmt.executeUpdate();
             if (filasAfectadas > 0) {
                 resultado = true;
+                System.out.println("Género eliminado con ID: " + idGenero);
+            } else {
+                System.out.println("No se eliminó el género (ID no encontrado).");
             }
-
         } catch (SQLException e) {
-            System.err.println("Error al eliminar el género: " + e.getMessage());
+            System.err.println("Error SQL en eliminarGenero: " + e.getMessage());
+     
             e.printStackTrace();
         } finally {
             try {
-                if (pstmt != null) pstmt.close();
+                if (cstmt != null) cstmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
         return resultado;
     }
+    public List<generoDTO> buscarGenerosPorNombre(String nombreGenero) {
+    Connection conn = null;
+    CallableStatement cstmt = null;
+    ResultSet rs = null;
+    List<generoDTO> generosEncontrados = new ArrayList<>();
+    String sql = "{CALL sp_buscar_generos_por_nombre(?)}";
+
+    try {
+        conn = DatabaseConnection.getConnection();
+        if (conn == null) {
+            System.err.println("Error: No se pudo obtener la conexión (buscarGenerosPorNombre).");
+            return generosEncontrados;
+        }
+        cstmt = conn.prepareCall(sql);
+        cstmt.setString(1, nombreGenero);
+
+        boolean hadResults = cstmt.execute();
+        if (hadResults) {
+            rs = cstmt.getResultSet();
+            while (rs.next()) {
+                generoDTO genero = new generoDTO(
+                    rs.getInt("id_genero"),
+                    rs.getString("nombre")
+                );
+                generosEncontrados.add(genero);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error SQL en buscarGenerosPorNombre: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (cstmt != null) cstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return generosEncontrados;
+}
 }

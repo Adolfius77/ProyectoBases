@@ -48,37 +48,6 @@ public class Admin extends javax.swing.JFrame {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jColorChooser1 = new javax.swing.JColorChooser();
         PanelActualizable = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        Añadir = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        editar = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        eliminar = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jSeparator8 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        agregarGenero = new javax.swing.JMenuItem();
-        jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jSeparator10 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem15 = new javax.swing.JMenuItem();
 
         jButton1.setText("jButton1");
 
@@ -145,149 +114,8 @@ public class Admin extends javax.swing.JFrame {
         );
         PanelActualizableLayout.setVerticalGroup(
             PanelActualizableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 623, Short.MAX_VALUE)
         );
-
-        jMenuBar1.setBackground(new java.awt.Color(0, 102, 255));
-        jMenuBar1.setForeground(new java.awt.Color(153, 0, 0));
-
-        jMenu1.setText("Gestión de Películas");
-
-        Añadir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        Añadir.setText("Añadir");
-        Añadir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AñadirActionPerformed(evt);
-            }
-        });
-        jMenu1.add(Añadir);
-        jMenu1.add(jSeparator1);
-
-        editar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        editar.setText("Editar");
-        editar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editarActionPerformed(evt);
-            }
-        });
-        jMenu1.add(editar);
-        jMenu1.add(jSeparator2);
-
-        eliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        eliminar.setText("Eliminar");
-        jMenu1.add(eliminar);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Gestión de Productoras");
-
-        jMenuItem4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem4.setText("Añadir");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem4);
-        jMenu2.add(jSeparator3);
-
-        jMenuItem5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem5.setText("Editar");
-        jMenu2.add(jMenuItem5);
-        jMenu2.add(jSeparator4);
-
-        jMenuItem6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem6.setText("Eliminar");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Gestión de Directores");
-
-        jMenuItem7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem7.setText("Añadir");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem7);
-        jMenu3.add(jSeparator5);
-
-        jMenuItem8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem8.setText("Editar");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem8);
-        jMenu3.add(jSeparator6);
-
-        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem9.setText("Eliminar");
-        jMenu3.add(jMenuItem9);
-
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Gestión de Actores");
-
-        jMenuItem10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem10.setText("Añadir");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem10);
-        jMenu4.add(jSeparator7);
-
-        jMenuItem11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem11.setText("Editar");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem11);
-        jMenu4.add(jSeparator8);
-
-        jMenuItem12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem12.setText("Eliminar");
-        jMenu4.add(jMenuItem12);
-
-        jMenuBar1.add(jMenu4);
-
-        jMenu5.setBackground(new java.awt.Color(153, 0, 0));
-        jMenu5.setText("Gestión de Géneros");
-
-        agregarGenero.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        agregarGenero.setText("Añadir");
-        agregarGenero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                agregarGeneroActionPerformed(evt);
-            }
-        });
-        jMenu5.add(agregarGenero);
-        jMenu5.add(jSeparator9);
-
-        jMenuItem14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem14.setText("Editar");
-        jMenu5.add(jMenuItem14);
-        jMenu5.add(jSeparator10);
-
-        jMenuItem15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMenuItem15.setText("Eliminar");
-        jMenu5.add(jMenuItem15);
-
-        jMenuBar1.add(jMenu5);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -302,105 +130,6 @@ public class Admin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void AñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AñadirActionPerformed
-
-        if (PanelActualizable == null) {
-            System.out.println("panel no inicializado");
-            return;
-        }
-        PanelActualizable.removeAll();
-        PanelPeliculaAgregar pelicula = new PanelPeliculaAgregar();
-        PanelActualizable.add(pelicula, java.awt.BorderLayout.CENTER);
-        PanelActualizable.revalidate();
-        PanelActualizable.repaint();
-
-    }//GEN-LAST:event_AñadirActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        if (PanelActualizable == null) {
-            System.out.println("panel no inicializado");
-            return;
-        }
-
-        PanelActualizable.removeAll();
-
-        PanelDirectoresAgregar dirrector = new PanelDirectoresAgregar();
-        PanelActualizable.add(dirrector, java.awt.BorderLayout.CENTER);
-
-        PanelActualizable.repaint();
-        PanelActualizable.revalidate();
-
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        if (PanelActualizable == null) {
-            System.out.println("panel no inicializado");
-            return;
-        }
-
-        PanelActualizable.removeAll();
-
-        PanelProductoraAgregar productora = new PanelProductoraAgregar();
-        PanelActualizable.add(productora, java.awt.BorderLayout.CENTER);
-
-        PanelActualizable.repaint();
-        PanelActualizable.revalidate();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        if (PanelActualizable == null) {
-            System.out.println("panel no inicializado");
-            return;
-        }
-
-        PanelActualizable.removeAll();
-
-        ActoresAgregar actor = new ActoresAgregar();
-        PanelActualizable.add(actor, java.awt.BorderLayout.CENTER);
-
-        PanelActualizable.repaint();
-        PanelActualizable.revalidate();
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
-    private void agregarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarGeneroActionPerformed
-        if (PanelActualizable == null) {
-        System.out.println("PanelActualizable no inicializado");
-        return;
-    }
-
-    PanelActualizable.removeAll();
-
-    agregarGeneroPanel generosPanel = new agregarGeneroPanel(); 
-    PanelActualizable.add(generosPanel, java.awt.BorderLayout.CENTER);
-
-    PanelActualizable.revalidate();
-    PanelActualizable.repaint();
-    }//GEN-LAST:event_agregarGeneroActionPerformed
-
-    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
-          if (PanelActualizable == null) {
-            System.out.println("panel no inicializado");
-            return;
-        }
-        PanelActualizable.removeAll();
-        PanelPeliculaActualizar actualizar = new  PanelPeliculaActualizar();
-        PanelActualizable.add(actualizar, java.awt.BorderLayout.CENTER);
-        PanelActualizable.revalidate();
-        PanelActualizable.repaint();
-    }//GEN-LAST:event_editarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -438,11 +167,7 @@ public class Admin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Añadir;
     private javax.swing.JPanel PanelActualizable;
-    private javax.swing.JMenuItem agregarGenero;
-    private javax.swing.JMenuItem editar;
-    private javax.swing.JMenuItem eliminar;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -454,37 +179,10 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JOptionPane jOptionPane2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator10;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JPopupMenu.Separator jSeparator6;
-    private javax.swing.JPopupMenu.Separator jSeparator7;
-    private javax.swing.JPopupMenu.Separator jSeparator8;
-    private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
