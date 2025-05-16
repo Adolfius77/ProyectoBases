@@ -55,9 +55,9 @@ public class GUIAdminInicio extends javax.swing.JFrame {
                 "/img/stranger things (4).jpg",
                 "/img/breaking bad (4).jpg",
                 "/img/dark (2).jpg",
-                "/img/avengers.jpg", 
-                "/img/llorona.jpg", 
-                "/img/forest.jpg"
+                "/img/avengers (2).jpg", 
+                "/img/llorona (2).jpg", 
+                "/img/forest (2).jpg"
         );
 
        
