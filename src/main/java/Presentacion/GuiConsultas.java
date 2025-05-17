@@ -2,8 +2,6 @@ package Presentacion;
 
 import DTOS.peliculaDTO;
 import Persistencia.añadirPeliculaDAO;
-// Ya no necesitas importar GeneroDAO, ActoresDAO, ProductoraDAO aquí si solo pides IDs
-// y no implementas la búsqueda por nombre dentro de esta GUI directamente.
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,10 +13,9 @@ import java.util.List;
 public class GuiConsultas extends javax.swing.JFrame {
 
     private JComboBox<String> cmbTipoConsulta;
-    private JPanel pnlInputsContainer; // Panel que usará CardLayout
+    private JPanel pnlInputsContainer;
     private CardLayout cardLayout;
 
-    // Paneles de input para cada tipo de consulta
     private JPanel pnlInputGenero;
     private JTextField txtIdGenero;
 
@@ -35,7 +32,7 @@ public class GuiConsultas extends javax.swing.JFrame {
     private JPanel pnlInputVacio;
 
     private JButton btnEjecutarConsulta;
-    private JButton btnRegresarAdmin; 
+    private JButton btnRegresarAdmin;
     private JTable tblResultados;
     private DefaultTableModel modeloTablaResultados;
 
@@ -43,27 +40,25 @@ public class GuiConsultas extends javax.swing.JFrame {
 
     public GuiConsultas() {
         peliculaDAO = new añadirPeliculaDAO();
-
-        initComponentsManual(); 
+        initComponentsManual();
         setTitle("Consultas de Peliculas");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-        setSize(800, 750); // Un poco más de alto para el botón
-        setLocationRelativeTo(null); 
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(800, 750);
+        setLocationRelativeTo(null);
     }
 
     private void initComponentsManual() {
         JPanel pnlPrincipal = new JPanel(new BorderLayout(10, 10));
         pnlPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        
         JPanel pnlSeleccion = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlSeleccion.add(new JLabel("Seleccione tipo de consulta:"));
         String[] tiposConsulta = {
             "-- Seleccione una opcion --",
             "Listar peliculas por genero",
-            "Películas donde actue un actor concreto",
-            "Películas de una productora específica",
-            "Peliculas estrenadas en un rango de años"
+            "Peliculas donde actue un actor concreto",
+            "Peliculas de una productora especifica",
+            "Peliculas estrenadas en un rango de anios"
         };
         cmbTipoConsulta = new JComboBox<>(tiposConsulta);
         pnlSeleccion.add(cmbTipoConsulta);
@@ -79,13 +74,13 @@ public class GuiConsultas extends javax.swing.JFrame {
         pnlInputGenero.add(new JLabel("ID del Genero:"));
         txtIdGenero = new JTextField(10);
         pnlInputGenero.add(txtIdGenero);
-        pnlInputsContainer.add(pnlInputGenero, "Listar películas por genero");
+        pnlInputsContainer.add(pnlInputGenero, "Listar peliculas por genero");
 
         pnlInputActor = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlInputActor.add(new JLabel("ID del Actor:"));
         txtIdActor = new JTextField(10);
         pnlInputActor.add(txtIdActor);
-        pnlInputsContainer.add(pnlInputActor, "Peliculas donde actúe un actor concreto");
+        pnlInputsContainer.add(pnlInputActor, "Peliculas donde actue un actor concreto");
 
         pnlInputProductora = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlInputProductora.add(new JLabel("ID de la Productora:"));
@@ -94,13 +89,13 @@ public class GuiConsultas extends javax.swing.JFrame {
         pnlInputsContainer.add(pnlInputProductora, "Peliculas de una productora especifica");
 
         pnlInputRangoAnios = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnlInputRangoAnios.add(new JLabel("Año Inicio:"));
+        pnlInputRangoAnios.add(new JLabel("Anio Inicio:"));
         txtAnioInicio = new JTextField(5);
         pnlInputRangoAnios.add(txtAnioInicio);
-        pnlInputRangoAnios.add(new JLabel("  Año Fin:")); 
+        pnlInputRangoAnios.add(new JLabel("  Anio Fin:"));
         txtAnioFin = new JTextField(5);
         pnlInputRangoAnios.add(txtAnioFin);
-        pnlInputsContainer.add(pnlInputRangoAnios, "Peliculas estrenadas en un rango de años");
+        pnlInputsContainer.add(pnlInputRangoAnios, "Peliculas estrenadas en un rango de anios");
         
         JPanel pnlCentroControles = new JPanel(new BorderLayout(5,5));
         pnlCentroControles.add(pnlInputsContainer, BorderLayout.NORTH);
@@ -112,7 +107,7 @@ public class GuiConsultas extends javax.swing.JFrame {
         
         pnlPrincipal.add(pnlCentroControles, BorderLayout.CENTER);
 
-        String[] columnasTabla = {"ID Pelicula", "Título", "Año Estreno", "Pais Origen", "ID Productora"};
+        String[] columnasTabla = {"ID Pelicula", "Titulo", "Anio Estreno", "Pais Origen", "ID Productora"};
         modeloTablaResultados = new DefaultTableModel(columnasTabla, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
@@ -120,19 +115,16 @@ public class GuiConsultas extends javax.swing.JFrame {
         tblResultados = new JTable(modeloTablaResultados);
         JScrollPane scrollPaneTabla = new JScrollPane(tblResultados);
         
-
-       
         JPanel pnlSur = new JPanel(new BorderLayout(10,10));
-        pnlSur.add(scrollPaneTabla, BorderLayout.CENTER); 
+        pnlSur.add(scrollPaneTabla, BorderLayout.CENTER);
 
         btnRegresarAdmin = new JButton("Regresar a Inicio Admin");
-        JPanel pnlBotonRegresar = new JPanel(new FlowLayout(FlowLayout.RIGHT)); 
+        JPanel pnlBotonRegresar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pnlBotonRegresar.add(btnRegresarAdmin);
-        pnlSur.add(pnlBotonRegresar, BorderLayout.SOUTH); 
+        pnlSur.add(pnlBotonRegresar, BorderLayout.SOUTH);
 
         pnlPrincipal.add(pnlSur, BorderLayout.SOUTH);
 
-        
         cmbTipoConsulta.addActionListener(e -> {
             String seleccion = (String) cmbTipoConsulta.getSelectedItem();
             cardLayout.show(pnlInputsContainer, seleccion);
@@ -141,7 +133,7 @@ public class GuiConsultas extends javax.swing.JFrame {
 
         btnEjecutarConsulta.addActionListener(e -> ejecutarConsultaSeleccionada());
 
-        btnRegresarAdmin.addActionListener(new ActionListener() { 
+        btnRegresarAdmin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 regresarAAdminInicio();
@@ -149,7 +141,6 @@ public class GuiConsultas extends javax.swing.JFrame {
         });
 
         add(pnlPrincipal);
-        
     }
     
     private void limpiarCamposYTabla() {
@@ -163,7 +154,7 @@ public class GuiConsultas extends javax.swing.JFrame {
 
     private void ejecutarConsultaSeleccionada() {
         String tipoConsulta = (String) cmbTipoConsulta.getSelectedItem();
-        if (tipoConsulta == null || tipoConsulta.equals("-- Seleccione una opción --")) {
+        if (tipoConsulta == null || tipoConsulta.equals("-- Seleccione una opcion --")) {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione un tipo de consulta.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -181,7 +172,7 @@ public class GuiConsultas extends javax.swing.JFrame {
                     int idGenero = Integer.parseInt(txtIdGenero.getText().trim());
                     resultados = peliculaDAO.obtenerPeliculasPorGenero(idGenero);
                     break;
-                case "Peliculas donde actúe un actor concreto":
+                case "Peliculas donde actue un actor concreto":
                     if (txtIdActor.getText().trim().isEmpty()) {
                         JOptionPane.showMessageDialog(this, "Ingrese el ID del Actor.", "Entrada Requerida", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -189,7 +180,7 @@ public class GuiConsultas extends javax.swing.JFrame {
                     int idActor = Integer.parseInt(txtIdActor.getText().trim());
                     resultados = peliculaDAO.obtenerPeliculasPorActor(idActor);
                     break;
-                case "Peliculas de una productora específica":
+                case "Peliculas de una productora especifica":
                      if (txtIdProductora.getText().trim().isEmpty()) {
                         JOptionPane.showMessageDialog(this, "Ingrese el ID de la Productora.", "Entrada Requerida", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -197,15 +188,15 @@ public class GuiConsultas extends javax.swing.JFrame {
                     int idProductora = Integer.parseInt(txtIdProductora.getText().trim());
                     resultados = peliculaDAO.obtenerPeliculasPorProductora(idProductora);
                     break;
-                case "Películas estrenadas en un rango de años":
+                case "Peliculas estrenadas en un rango de anios":
                     if (txtAnioInicio.getText().trim().isEmpty() || txtAnioFin.getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(this, "Ingrese el Año Inicio y Año Fin.", "Entrada Requerida", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Ingrese el Anio Inicio y Anio Fin.", "Entrada Requerida", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     int anioInicio = Integer.parseInt(txtAnioInicio.getText().trim());
                     int anioFin = Integer.parseInt(txtAnioFin.getText().trim());
                     if (anioInicio > anioFin) {
-                        JOptionPane.showMessageDialog(this, "El Año Inicio no puede ser mayor al Año Fin.", "Error de Rango", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "El Anio Inicio no puede ser mayor al Anio Fin.", "Error de Rango", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     resultados = peliculaDAO.obtenerPeliculasPorRangoDeAnios(anioInicio, anioFin);
@@ -227,16 +218,15 @@ public class GuiConsultas extends javax.swing.JFrame {
             }
             
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID numerico válido o años validos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID numerico valido o anios validos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ocurrio un error al ejecutar la consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
-
     
     private void regresarAAdminInicio() {
-        GUIAdminInicio adminInicio = new GUIAdminInicio();
+        GUIAdminInicio adminInicio = new GUIAdminInicio(); 
         adminInicio.setVisible(true); 
         this.dispose(); 
     }
@@ -258,5 +248,6 @@ public class GuiConsultas extends javax.swing.JFrame {
             }
         });
     }
-  
+    // No necesitas una sección de variables generadas por NetBeans si usas initComponentsManual()
+    // Las variables de componentes ya están declaradas como miembros de la clase.
 }
