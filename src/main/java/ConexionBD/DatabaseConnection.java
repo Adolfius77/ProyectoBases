@@ -10,7 +10,7 @@ public class DatabaseConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/Streamingdb";
     private static final String USER = "root";
-    private static final String PASSWORD = "adolfo";
+    private static final String PASSWORD = "adolfo"; //cambiar a vacio si no tiene contra o cambiar si tienes una diferente no se les olvide
 
     private DatabaseConnection() {
     }
@@ -19,14 +19,14 @@ public class DatabaseConnection {
         try {
 
             if (connection == null || connection.isClosed()) {
-                System.out.println("DatabaseConnection: Conexión es nula o está cerrada. Abriendo nueva conexión...");
+                System.out.println("DatabaseConnection: Conexion es nula o esta cerrada. Abriendo nueva conexion...");
                 // Cargar el driver JDBC de MySQL
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("DatabaseConnection: Nueva conexión a la base de datos establecida.");
             }
         } catch (ClassNotFoundException e) {
-            System.err.println("DatabaseConnection ERROR CRÍTICO: Driver JDBC MySQL no encontrado. Asegúrate de que la dependencia de MySQL Connector/J esté en tu pom.xml.");
+            System.err.println("DatabaseConnection ERROR CRITICO: Driver JDBC MySQL no encontrado. Asegurate de que la dependencia de MySQL Connector/J esté en tu pom.xml.");
             e.printStackTrace();
             connection = null;
         } catch (SQLException e) {
@@ -43,10 +43,10 @@ public class DatabaseConnection {
             try {
                 if (!connection.isClosed()) {
                     connection.close();
-                    System.out.println("DatabaseConnection: Conexión compartida CERRADA explícitamente.");
+                    System.out.println("DatabaseConnection: Conexion compartida CERRADA explicitamente.");
                 }
             } catch (SQLException e) {
-                System.err.println("DatabaseConnection ERROR al cerrar la conexión compartida: " + e.getMessage());
+                System.err.println("DatabaseConnection ERROR al cerrar la conexion compartida: " + e.getMessage());
                 e.printStackTrace();
             } finally {
 
