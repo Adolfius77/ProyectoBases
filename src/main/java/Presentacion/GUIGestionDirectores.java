@@ -20,9 +20,8 @@ import javax.swing.table.TableModel;
  *
  * @author USER
  */
-
 public class GUIGestionDirectores extends javax.swing.JFrame {
-    
+
     private añadirPeliculaDAO peliculaDAO;
 
     /**
@@ -32,25 +31,24 @@ public class GUIGestionDirectores extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
 
     public GUIGestionDirectores() {
-      initComponents(); // Llama al initComponents que tú proporcionaste
+        initComponents();
         setLocationRelativeTo(null);
-        setTitle("Gestión de Directores"); // Título actualizado
+        setTitle("Gestion de Directores");
 
         directoresDAO = new directoresDAO();
 
         configurarTabla();
         cargarDatosEnTabla();
 
-        // Listener para la selección de filas en la JTable
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
                     int filaSeleccionada = jTable1.getSelectedRow();
-                    
-                    // Obtener datos del director de la fila seleccionada
-                    int idDirectorSel = (int) tableModel.getValueAt(filaSeleccionada, 0); // Columna ID Director
-                    String nombreSel = tableModel.getValueAt(filaSeleccionada, 1).toString(); // Columna Nombre
-                    String nacionalidadSel = tableModel.getValueAt(filaSeleccionada, 2).toString();   // Columna Nacionalidad
+
+                    int idDirectorSel = (int) tableModel.getValueAt(filaSeleccionada, 0);
+                    String nombreSel = tableModel.getValueAt(filaSeleccionada, 1).toString();
+                    String nacionalidadSel = tableModel.getValueAt(filaSeleccionada, 2).toString();
 
                     // Llenar los campos de texto
                     txtIdDirector.setText(String.valueOf(idDirectorSel));
@@ -62,20 +60,20 @@ public class GUIGestionDirectores extends javax.swing.JFrame {
     }
 
     private void configurarTabla() {
-        String[] columnas = {"ID Director", "Nombre", "Nacionalidad"}; // Columnas para la tabla de directores
+        String[] columnas = {"ID Director", "Nombre", "Nacionalidad"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Celdas no editables
+                return false;
             }
         };
         jTable1.setModel(tableModel);
         jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-   private void cargarDatosEnTabla() {
-        tableModel.setRowCount(0); // Limpiar tabla
-        List<dirrectorDTO> directores = directoresDAO.obtenerTodosLosDirectores(); // Usar el método del DAO de directores
+    private void cargarDatosEnTabla() {
+        tableModel.setRowCount(0);
+        List<dirrectorDTO> directores = directoresDAO.obtenerTodosLosDirectores();
         if (directores != null) {
             for (dirrectorDTO director : directores) {
                 Object[] rowData = {
@@ -88,7 +86,7 @@ public class GUIGestionDirectores extends javax.swing.JFrame {
         }
     }
 
-private void limpiarCampos() {
+    private void limpiarCampos() {
         txtIdDirector.setText("");
         txtNombre.setText("");
         txtNacionalidad.setText("");
@@ -469,21 +467,21 @@ private void limpiarCampos() {
         String nacionalidadDirector = txtNacionalidad.getText().trim();
 
         if (nombreDirector.isEmpty() || nacionalidadDirector.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre y la nacionalidad del director son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre y la nacionalidad del director son obligatorios.", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-         
-            dirrectorDTO nuevoDirector = new dirrectorDTO(0, nombreDirector, nacionalidadDirector); 
+
+            dirrectorDTO nuevoDirector = new dirrectorDTO(0, nombreDirector, nacionalidadDirector);
             boolean exito = directoresDAO.agregarDirector(nuevoDirector);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Director agregado correctamente con ID: " + nuevoDirector.getIdDirector(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Director agregado correctamente con ID: " + nuevoDirector.getIdDirector(), "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosEnTabla();
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al agregar el director.", "Error de Inserción", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al agregar el director.", "Error de Insercion", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error inesperado al agregar director: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -493,7 +491,7 @@ private void limpiarCampos() {
     }//GEN-LAST:event_BtnAgregarActionPerformed
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-    String idStr = txtIdDirector.getText().trim(); // Usar txtIdDirector
+        String idStr = txtIdDirector.getText().trim();
         if (idStr.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un director de la tabla para modificar.", "Ningún Director Seleccionado", JOptionPane.WARNING_MESSAGE);
             return;
@@ -503,7 +501,7 @@ private void limpiarCampos() {
         String nacionalidadDirector = txtNacionalidad.getText().trim();
 
         if (nombreDirector.isEmpty() || nacionalidadDirector.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre y la nacionalidad son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre y la nacionalidad son obligatorios.", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -533,7 +531,7 @@ private void limpiarCampos() {
     }//GEN-LAST:event_txtIdPeliculaActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-       String idStr = txtIdDirector.getText().trim();
+        String idStr = txtIdDirector.getText().trim();
         if (idStr.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un director de la tabla para eliminar.", "Ningún Director Seleccionado", JOptionPane.WARNING_MESSAGE);
             return;
@@ -562,11 +560,11 @@ private void limpiarCampos() {
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
-       String terminoBusqueda = JOptionPane.showInputDialog(this, "Ingrese el nombre del director a buscar:", "Buscar Director por Nombre", JOptionPane.QUESTION_MESSAGE);
+        String terminoBusqueda = JOptionPane.showInputDialog(this, "Ingrese el nombre del director a buscar:", "Buscar Director por Nombre", JOptionPane.QUESTION_MESSAGE);
 
         if (terminoBusqueda != null) {
             if (terminoBusqueda.trim().isEmpty()) {
-                cargarDatosEnTabla(); 
+                cargarDatosEnTabla();
             } else {
                 List<dirrectorDTO> directoresResultado = directoresDAO.buscarDirectoresPorNombre(terminoBusqueda.trim());
                 tableModel.setRowCount(0);
@@ -581,19 +579,19 @@ private void limpiarCampos() {
                 }
             }
         }
-        
+
     }//GEN-LAST:event_BtnBuscarActionPerformed
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
-      GUIAdminInicio ini = new GUIAdminInicio();
-      ini.setVisible(true);
-      this.dispose();
+        GUIAdminInicio ini = new GUIAdminInicio();
+        ini.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnProduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProduActionPerformed
-       GUIGestionProductora produ = new GUIGestionProductora();
-       produ.setVisible(true);
-       this.dispose();
+        GUIGestionProductora produ = new GUIGestionProductora();
+        produ.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnProduActionPerformed
 
     private void btnGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneroActionPerformed
@@ -609,9 +607,9 @@ private void limpiarCampos() {
     }//GEN-LAST:event_btnPeliActionPerformed
 
     private void btnActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActoresActionPerformed
-       GUIGestionActores act = new GUIGestionActores();
-       act.setVisible(true);
-       this.dispose();
+        GUIGestionActores act = new GUIGestionActores();
+        act.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnActoresActionPerformed
 
     /**
@@ -644,6 +642,7 @@ private void limpiarCampos() {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIGestionDirectores().setVisible(true);
             }

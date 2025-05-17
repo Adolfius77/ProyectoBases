@@ -31,28 +31,27 @@ public class GUIGestionGenero extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
 
     public GUIGestionGenero() {
-        initComponents(); // Llama al initComponents que tú proporcionaste
-        setLocationRelativeTo(null); // Usar null para centrar en pantalla
-        setTitle("Gestión de Géneros"); // Título de la ventana
+        initComponents();
+        setLocationRelativeTo(null); 
+        setTitle("Gestion de Generos");
 
         generoDAO = new GeneroDAO();
 
         configurarTabla();
         cargarGenerosEnTabla();
 
-        // Listener para la selección de filas en la JTable
+     
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
                     int filaSeleccionada = jTable1.getSelectedRow();
-                    // Obtener datos de la fila seleccionada
-                    // Columna 0: ID Género, Columna 1: Nombre (según configurarTabla)
-                    int idGeneroSeleccionado = (int) tableModel.getValueAt(filaSeleccionada, 0); // Asumiendo que el ID es la primera columna
+                   
+                    int idGeneroSeleccionado = (int) tableModel.getValueAt(filaSeleccionada, 0);
                     String nombreGeneroSeleccionado = tableModel.getValueAt(filaSeleccionada, 1).toString();
 
                     // Llenar los campos de texto
-                    txtID.setText(String.valueOf(idGeneroSeleccionado)); // Usar txtID para el ID del género
-                    txtNombre.setText(nombreGeneroSeleccionado);        // Usar txtNombre para el nombre del género
+                    txtID.setText(String.valueOf(idGeneroSeleccionado)); 
+                    txtNombre.setText(nombreGeneroSeleccionado);       
                 }
             }
         });
@@ -60,11 +59,11 @@ public class GUIGestionGenero extends javax.swing.JFrame {
 
     private void configurarTabla() {
         // Columnas para la tabla de géneros
-        String[] columnas = {"ID Género", "Nombre"};
+        String[] columnas = {"ID Genero", "Nombre"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Celdas no editables directamente
+                return false; 
             }
         };
         jTable1.setModel(tableModel);
@@ -72,7 +71,7 @@ public class GUIGestionGenero extends javax.swing.JFrame {
     }
 
     private void cargarGenerosEnTabla() {
-        tableModel.setRowCount(0); // Limpiar tabla
+        tableModel.setRowCount(0); 
         List<generoDTO> generos = generoDAO.obtenerTodosLosGeneros();
         if (generos != null) {
             for (generoDTO genero : generos) {
@@ -451,10 +450,10 @@ public class GUIGestionGenero extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIdProductoraActionPerformed
 
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
-        String nombreGenero = txtNombre.getText().trim(); // Campo para el nombre del género
+        String nombreGenero = txtNombre.getText().trim();
 
         if (nombreGenero.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre del género no puede estar vacío.", "Campo Requerido", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre del genero no puede estar vacio.", "Campo Requerido", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -464,14 +463,14 @@ public class GUIGestionGenero extends javax.swing.JFrame {
             boolean exito = generoDAO.agregarGenero(nuevoGenero);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Género agregado correctamente con ID: " + nuevoGenero.getIdGenero(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Genero agregado correctamente con ID: " + nuevoGenero.getIdGenero(), "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarGenerosEnTabla(); // Refrescar tabla
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al agregar el género.", "Error de Inserción", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al agregar el genero.", "Error de Insercion", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error inesperado al agregar género: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error inesperado al agregar genero: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
 
@@ -480,13 +479,13 @@ public class GUIGestionGenero extends javax.swing.JFrame {
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
        String idStr = txtID.getText().trim(); // Usar txtID para el ID del género
         if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un género de la tabla para modificar.", "Ningún Género Seleccionado", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un genero de la tabla para modificar.", "Ningun Género Seleccionado", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         String nombreGenero = txtNombre.getText().trim();
         if (nombreGenero.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre del género no puede estar vacío.", "Campo Requerido", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre del genero no puede estar vacio.", "Campo Requerido", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -496,16 +495,16 @@ public class GUIGestionGenero extends javax.swing.JFrame {
             boolean exito = generoDAO.actualizarGenero(generoModificado);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Género modificado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Genero modificado correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarGenerosEnTabla();
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al modificar el género (verifique si el ID existe).", "Error de Modificación", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al modificar el genero (verifique si el ID existe).", "Error de Modificacion", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El ID del género debe ser un número (generalmente seleccionado de la tabla).", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El ID del genero debe ser un número (generalmente seleccionado de la tabla).", "Error de Formato", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error inesperado al modificar género: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error inesperado al modificar genero: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
 
@@ -518,34 +517,34 @@ public class GUIGestionGenero extends javax.swing.JFrame {
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
        String idStr = txtID.getText().trim(); // Usar txtID para el ID del género
         if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un género de la tabla para eliminar.", "Ningún Género Seleccionado", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un genero de la tabla para eliminar.", "Ningun Género Seleccionado", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este género?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea eliminar este genero?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
                 int idGenero = Integer.parseInt(idStr);
                 boolean exito = generoDAO.eliminarGenero(idGenero);
 
                 if (exito) {
-                    JOptionPane.showMessageDialog(this, "Género eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Genero eliminado correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                     cargarGenerosEnTabla();
                     limpiarCampos();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Error al eliminar el género (verifique si el ID existe y no tiene películas asociadas).", "Error de Eliminación", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el genero (verifique si el ID existe y no tiene películas asociadas).", "Error de Eliminacion", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "El ID del género no es válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El ID del genero no es valido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error inesperado al eliminar género: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error inesperado al eliminar genero: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
-       String terminoBusqueda = JOptionPane.showInputDialog(this, "Ingrese el nombre del género a buscar:", "Buscar Género por Nombre", JOptionPane.QUESTION_MESSAGE);
+       String terminoBusqueda = JOptionPane.showInputDialog(this, "Ingrese el nombre del genero a buscar:", "Buscar Genero por Nombre", JOptionPane.QUESTION_MESSAGE);
 
         if (terminoBusqueda != null) {
             if (terminoBusqueda.trim().isEmpty()) {
@@ -559,9 +558,9 @@ public class GUIGestionGenero extends javax.swing.JFrame {
                     for (generoDTO genero : generosResultado) {
                         tableModel.addRow(new Object[]{genero.getIdGenero(), genero.getNombre()});
                     }
-                    JOptionPane.showMessageDialog(this, generosResultado.size() + " género(s) encontrado(s).", "Resultado de Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, generosResultado.size() + " genero(s) encontrado(s).", "Resultado de Busqueda", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "No se encontraron géneros con el nombre: '" + terminoBusqueda + "'", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se encontraron generos con el nombre: '" + terminoBusqueda + "'", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         }
@@ -628,6 +627,7 @@ public class GUIGestionGenero extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIGestionGenero().setVisible(true);
             }

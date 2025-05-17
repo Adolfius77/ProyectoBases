@@ -4,10 +4,14 @@
  */
 package Presentacion;
 
+import ConexionBD.DatabaseConnection;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -295,58 +299,82 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void BtnRegistraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistraseActionPerformed
-       String nombre_completo = Txtnombre_completo.getText();
-        String correoElectronico = TxtCorreo.getText();
-        String contrasena = new String(Contrasena1.getPassword()); 
+        String nombre_completo = Txtnombre_completo.getText().trim();
+        String correoElectronico = TxtCorreo.getText().trim();
+        String contrasena = new String(Contrasena1.getPassword()).trim();
 
-        String SUrl = "jdbc:MySQL://localhost:3306/StreamingDB"; 
-        String SUser = "root"; 
-        String Spass = "adolfo"; 
-        
-        if(nombre_completo.isEmpty()){
-            JOptionPane.showMessageDialog(new JFrame(), " el nombre completo es requerido", "error", JOptionPane.ERROR_MESSAGE);
+        if (nombre_completo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre completo es requerido.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
             return;
-        }      
-          if(correoElectronico.isEmpty()){
-            JOptionPane.showMessageDialog(new JFrame(), " el correo  es requerido", "error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (correoElectronico.isEmpty() || !correoElectronico.contains("@")) { // Validación básica de correo
+            JOptionPane.showMessageDialog(this, "El correo electronico es requerido y debe ser valido.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
             return;
-        }   
-           if(contrasena.isEmpty()){
-            JOptionPane.showMessageDialog(new JFrame(), " la conrtrasena   es requerido", "error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La contraseña es requerida.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
             return;
-        }   
+        }
+
+        Connection conn = null;
+        CallableStatement cstmt = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-           Connection con = DriverManager.getConnection(SUrl, SUser, Spass);
-            String sql = "INSERT INTO usuario (nombre_completo, correoElectronico, contrasena) VALUES (?, ?, ?)";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, nombre_completo);
-            pstmt.setString(2, correoElectronico);
-            pstmt.setString(3, contrasena); 
+            conn = DatabaseConnection.getConnection();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Error de conexion a la base de datos.", "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            int filasInsertadas = pstmt.executeUpdate();
-            if (filasInsertadas > 0) {
-                JOptionPane.showMessageDialog(new JFrame(), "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+           
+            String sql = "{CALL sp_registrar_usuario(?, ?, ?, ?, ?)}";
+            cstmt = conn.prepareCall(sql);
+            cstmt.setString(1, nombre_completo);
+            cstmt.setString(2, correoElectronico);
+            cstmt.setString(3, contrasena);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int nuevoIdUsuario = cstmt.getInt(4);
+            String mensajeSP = cstmt.getString(5);
+
+            if (nuevoIdUsuario > 0) {
+                JOptionPane.showMessageDialog(this, mensajeSP, "exito", JOptionPane.INFORMATION_MESSAGE);
                 Txtnombre_completo.setText("");
                 TxtCorreo.setText("");
                 Contrasena1.setText("");
+
+                InicioSesion inicio = new InicioSesion();
+                inicio.setVisible(true);
+                this.dispose();
+
             } else {
-                JOptionPane.showMessageDialog(new JFrame(), "Error al registrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, mensajeSP, "Error de Registro", JOptionPane.ERROR_MESSAGE);
             }
 
-            pstmt.close();
-            con.close();
-
+        } catch (SQLException e) {
+            System.err.println("Error SQL en BtnRegistraseActionPerformed: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al registrar: " + e.getMessage(), "Error SQL", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Error al registrar: " + e.getMessage());
-            JOptionPane.showMessageDialog(new JFrame(), "Error al registrar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Error general en BtnRegistraseActionPerformed: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         } finally {
+            try {
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             java.util.Arrays.fill(Contrasena1.getPassword(), '0');
+
         }
-        InicioSesion inicio = new InicioSesion();
-        inicio.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_BtnRegistraseActionPerformed
 
     /**

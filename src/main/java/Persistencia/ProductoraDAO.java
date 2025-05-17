@@ -197,7 +197,7 @@ public class ProductoraDAO {
     try {
         conn = DatabaseConnection.getConnection();
         if (conn == null) {
-            System.err.println("Error: No se pudo obtener la conexión (buscarProductorasPorNombre).");
+            System.err.println("Error: No se pudo obtener la conexion (buscarProductorasPorNombre).");
             return productorasEncontradas;
         }
         cstmt = conn.prepareCall(sql);

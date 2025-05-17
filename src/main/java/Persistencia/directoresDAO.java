@@ -22,19 +22,19 @@ public class directoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (agregarDirector).");
+                System.err.println("Error: No se pudo obtener la conexion (agregarDirector).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
             cstmt.setString(1, director.getNombre());
             cstmt.setString(2, director.getNacionalidad());
-            cstmt.registerOutParameter(3, Types.INTEGER); // p_nuevo_id_director
+            cstmt.registerOutParameter(3, Types.INTEGER); 
 
             cstmt.execute();
             int nuevoId = cstmt.getInt(3);
 
             if (nuevoId > 0) {
-                director.setIdDirector(nuevoId); // Actualizar DTO
+                director.setIdDirector(nuevoId); 
                 resultado = true;
                 System.out.println("Director agregado con ID: " + nuevoId);
             } else {
@@ -65,7 +65,7 @@ public class directoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerDirectorPorId).");
+                System.err.println("Error: No se pudo obtener la conexion (obtenerDirectorPorId).");
                 return null;
             }
             cstmt = conn.prepareCall(sql);
@@ -110,7 +110,7 @@ public class directoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerTodosLosDirectores).");
+                System.err.println("Error: No se pudo obtener la conexion (obtenerTodosLosDirectores).");
                 return listaDirectores;
             }
             cstmt = conn.prepareCall(sql);
@@ -193,7 +193,7 @@ public class directoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (eliminarDirector).");
+                System.err.println("Error: No se pudo obtener la conexion (eliminarDirector).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
@@ -204,7 +204,7 @@ public class directoresDAO {
                 resultado = true;
                 System.out.println("Director eliminado con ID: " + idDirector);
             } else {
-                System.out.println("No se eliminó el director (ID no encontrado).");
+                System.out.println("No se elimino el director (ID no encontrado).");
             }
         } catch (SQLException e) {
             System.err.println("Error SQL en eliminarDirector: " + e.getMessage());
@@ -231,7 +231,7 @@ public class directoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (buscarDirectoresPorNombre).");
+                System.err.println("Error: No se pudo obtener la conexion (buscarDirectoresPorNombre).");
                 return directoresEncontrados;
             }
             cstmt = conn.prepareCall(sql);

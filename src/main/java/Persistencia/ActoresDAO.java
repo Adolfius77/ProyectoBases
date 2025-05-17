@@ -21,7 +21,7 @@ public class ActoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (agregarActor).");
+                System.err.println("Error: No se pudo obtener la conexion (agregarActor).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
@@ -62,7 +62,7 @@ public class ActoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
              if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerActorPorId).");
+                System.err.println("Error: No se pudo obtener la conexion (obtenerActorPorId).");
                 return null;
             }
             cstmt = conn.prepareCall(sql);
@@ -103,8 +103,8 @@ public class ActoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerTodosLosActores).");
-                return listaActores; // Devuelve lista vacía
+                System.err.println("Error: No se pudo obtener la conexion (obtenerTodosLosActores).");
+                return listaActores; 
             }
             cstmt = conn.prepareCall(sql);
             boolean hadResults = cstmt.execute();
@@ -143,7 +143,7 @@ public class ActoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (actualizarActor).");
+                System.err.println("Error: No se pudo obtener la conexion (actualizarActor).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
@@ -156,7 +156,7 @@ public class ActoresDAO {
                 resultado = true;
                 System.out.println("Actor actualizado con ID: " + actor.getIdActor());
             } else {
-                 System.out.println("No se actualizó el actor (ID no encontrado o datos iguales).");
+                 System.out.println("No se actualizo el actor (ID no encontrado o datos iguales).");
             }
         } catch (SQLException e) {
             System.err.println("Error SQL en actualizarActor: " + e.getMessage());
@@ -180,7 +180,7 @@ public class ActoresDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (eliminarActor).");
+                System.err.println("Error: No se pudo obtener la conexion (eliminarActor).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
@@ -217,7 +217,7 @@ public class ActoresDAO {
     try {
         conn = DatabaseConnection.getConnection();
         if (conn == null) {
-            System.err.println("Error: No se pudo obtener la conexión (buscarActoresPorNombre).");
+            System.err.println("Error: No se pudo obtener la conexion (buscarActoresPorNombre).");
             return actoresEncontrados;
         }
         cstmt = conn.prepareCall(sql);

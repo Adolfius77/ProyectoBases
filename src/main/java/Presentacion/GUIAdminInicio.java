@@ -64,7 +64,7 @@ public class GUIAdminInicio extends javax.swing.JFrame {
         labelsDeImagenes = new JLabel[]{jLabel14, jLabel16, jLabel17};
 
         if (listaRutasImagenes.isEmpty() || listaRutasImagenes.size() < 3) {
-            System.err.println("No hay suficientes imágenes para el slideshow o la lista está vacía.");
+            System.err.println("No hay suficientes imagenes para el slideshow o la lista esta vacia.");
          
             jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stranger things (4).jpg")));
             jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/breaking bad (4).jpg")));
@@ -72,7 +72,7 @@ public class GUIAdminInicio extends javax.swing.JFrame {
             return;
         }
 
-        // Índices iniciales para cada JLabel (para que muestren imágenes diferentes al inicio)
+     
         indiceImagenActual1 = 0;
         indiceImagenActual2 = 1 % listaRutasImagenes.size(); 
         indiceImagenActual3 = 2 % listaRutasImagenes.size(); 
@@ -162,6 +162,9 @@ public class GUIAdminInicio extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jButton14 = new javax.swing.JButton();
+        btnPeliculasDondeActueUnActor = new javax.swing.JButton();
+        BtnRangoAnios = new javax.swing.JButton();
+        BtnProductoraEspecifica = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -178,14 +181,11 @@ public class GUIAdminInicio extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         BtnAsignarGenerosPeliculas = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
+        BtnAsignarGeneroPelicula = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         BtnListarPeliculasPorGenero = new javax.swing.JButton();
         btnAsignarActoresPeliculas = new javax.swing.JButton();
         btnAsignarDirectoresAPeliculas = new javax.swing.JButton();
-        btnPeliculasDondeActueUnActor = new javax.swing.JButton();
-        BtnProductoraEspecifica = new javax.swing.JButton();
-        BtnRangoAnios = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -318,6 +318,18 @@ public class GUIAdminInicio extends javax.swing.JFrame {
                 jButton14ActionPerformed(evt);
             }
         });
+
+        btnPeliculasDondeActueUnActor.setBackground(new java.awt.Color(102, 0, 0));
+        btnPeliculasDondeActueUnActor.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnPeliculasDondeActueUnActor.setText("Películas donde actue un actor concreto");
+
+        BtnRangoAnios.setBackground(new java.awt.Color(204, 0, 0));
+        BtnRangoAnios.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        BtnRangoAnios.setText("Peliculas estrenadas en un rango de años");
+
+        BtnProductoraEspecifica.setBackground(new java.awt.Color(102, 0, 0));
+        BtnProductoraEspecifica.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        BtnProductoraEspecifica.setText("Peliculas de una productora especifica");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -470,13 +482,13 @@ public class GUIAdminInicio extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
         jLabel12.setText("Asignar Relaciones");
 
-        jButton7.setBackground(new java.awt.Color(0, 0, 0));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setText("Asignar géneros a peliculas");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        BtnAsignarGeneroPelicula.setBackground(new java.awt.Color(0, 0, 0));
+        BtnAsignarGeneroPelicula.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        BtnAsignarGeneroPelicula.setForeground(new java.awt.Color(255, 255, 255));
+        BtnAsignarGeneroPelicula.setText("Asignar géneros a peliculas");
+        BtnAsignarGeneroPelicula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                BtnAsignarGeneroPeliculaActionPerformed(evt);
             }
         });
 
@@ -485,7 +497,7 @@ public class GUIAdminInicio extends javax.swing.JFrame {
 
         BtnListarPeliculasPorGenero.setBackground(new java.awt.Color(153, 0, 0));
         BtnListarPeliculasPorGenero.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        BtnListarPeliculasPorGenero.setText("Listar peliculas por genero");
+        BtnListarPeliculasPorGenero.setText("IR A CONSULTAS");
         BtnListarPeliculasPorGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnListarPeliculasPorGeneroActionPerformed(evt);
@@ -512,18 +524,6 @@ public class GUIAdminInicio extends javax.swing.JFrame {
             }
         });
 
-        btnPeliculasDondeActueUnActor.setBackground(new java.awt.Color(102, 0, 0));
-        btnPeliculasDondeActueUnActor.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        btnPeliculasDondeActueUnActor.setText("Películas donde actue un actor concreto");
-
-        BtnProductoraEspecifica.setBackground(new java.awt.Color(102, 0, 0));
-        BtnProductoraEspecifica.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        BtnProductoraEspecifica.setText("Peliculas de una productora especifica");
-
-        BtnRangoAnios.setBackground(new java.awt.Color(204, 0, 0));
-        BtnRangoAnios.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        BtnRangoAnios.setText("Peliculas estrenadas en un rango de años");
-
         javax.swing.GroupLayout BtnAsignarGenerosPeliculasLayout = new javax.swing.GroupLayout(BtnAsignarGenerosPeliculas);
         BtnAsignarGenerosPeliculas.setLayout(BtnAsignarGenerosPeliculasLayout);
         BtnAsignarGenerosPeliculasLayout.setHorizontalGroup(
@@ -534,15 +534,12 @@ public class GUIAdminInicio extends javax.swing.JFrame {
                     .addComponent(BtnListarPeliculasPorGenero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAsignarDirectoresAPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAsignarActoresPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BtnAsignarGeneroPelicula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(BtnAsignarGenerosPeliculasLayout.createSequentialGroup()
                         .addGroup(BtnAsignarGenerosPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel18)
                             .addComponent(jLabel12))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnPeliculasDondeActueUnActor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnProductoraEspecifica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnRangoAnios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         BtnAsignarGenerosPeliculasLayout.setVerticalGroup(
@@ -551,7 +548,7 @@ public class GUIAdminInicio extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton7)
+                .addComponent(BtnAsignarGeneroPelicula)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAsignarActoresPeliculas)
                 .addGap(18, 18, 18)
@@ -559,14 +556,8 @@ public class GUIAdminInicio extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel18)
                 .addGap(18, 18, 18)
-                .addComponent(BtnListarPeliculasPorGenero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnPeliculasDondeActueUnActor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnProductoraEspecifica)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnRangoAnios)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addComponent(BtnListarPeliculasPorGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -635,16 +626,22 @@ public class GUIAdminInicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnBuscarActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    private void BtnAsignarGeneroPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAsignarGeneroPeliculaActionPerformed
+        GuiGeneroPelicula2 pelicula = new GuiGeneroPelicula2();
+        pelicula.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnAsignarGeneroPeliculaActionPerformed
 
     private void btnAsignarActoresPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActoresPeliculasActionPerformed
-        // TODO add your handling code here:
+       GuiActorPelicula actorPeli = new GuiActorPelicula();
+       actorPeli.setVisible(true);
+       this.dispose();
     }//GEN-LAST:event_btnAsignarActoresPeliculasActionPerformed
 
     private void BtnListarPeliculasPorGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnListarPeliculasPorGeneroActionPerformed
-        // TODO add your handling code here:
+        GuiConsultas consultas = new GuiConsultas();
+        consultas.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_BtnListarPeliculasPorGeneroActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
@@ -652,7 +649,9 @@ public class GUIAdminInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void btnAsignarDirectoresAPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarDirectoresAPeliculasActionPerformed
-        // TODO add your handling code here:
+        GuiDirectorPelicula direPeli = new GuiDirectorPelicula();
+        direPeli.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAsignarDirectoresAPeliculasActionPerformed
 
     private void BtnPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPeliculasActionPerformed
@@ -715,6 +714,7 @@ public class GUIAdminInicio extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIAdminInicio().setVisible(true);
             }
@@ -724,6 +724,7 @@ public class GUIAdminInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnActores;
     private javax.swing.JButton BtnAgregar;
+    private javax.swing.JButton BtnAsignarGeneroPelicula;
     private javax.swing.JPanel BtnAsignarGenerosPeliculas;
     private javax.swing.JButton BtnBuscar;
     private javax.swing.JButton BtnDirrectores;
@@ -740,7 +741,6 @@ public class GUIAdminInicio extends javax.swing.JFrame {
     private javax.swing.JButton btnProductora;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

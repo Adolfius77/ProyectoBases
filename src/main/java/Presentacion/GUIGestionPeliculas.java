@@ -31,7 +31,7 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
     public GUIGestionPeliculas() {
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("Gestión de Películas");
+        setTitle("Gestión de Peliculas");
 
         peliculaDAO = new añadirPeliculaDAO();
 
@@ -39,6 +39,7 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
         cargarDatosEnTabla();
 
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent event) {
 
                 if (!event.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
@@ -63,7 +64,7 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
     }
 
     private void configurarTabla() {
-        String[] columnas = {"ID Película", "Título", "Año Estreno", "País Origen", "ID Productora"};
+        String[] columnas = {"ID Pelicula", "Título", "Año Estreno", "País Origen", "ID Productora"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -113,6 +114,8 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
+        btnAgregarGenero = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -158,6 +161,15 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
         jLabel11.setText("jLabel11");
 
         jButton6.setText("jButton6");
+
+        btnAgregarGenero.setText("agregar genero");
+        btnAgregarGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarGeneroActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Agregar genero a pelicula");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -498,7 +510,7 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
         String idProductoraStr = txtIdProductora.getText().trim();
 
         if (titulo.isEmpty() || anioStr.isEmpty() || pais.isEmpty() || idProductoraStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos (Título, Año, País, ID Productora) son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Todos los campos (Título, Año, País, ID Productora) son obligatorios.", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
         try {
@@ -550,7 +562,7 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
             boolean exito = peliculaDAO.actualizarPelicula(peliculaModificada);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Película modificada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Pelicula modificada correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosEnTabla();
                 limpiarCampos();
             } else {
@@ -570,17 +582,17 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIdPeliculaActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-       String idStr = txtIdPelicula.getText().trim();
+        String idStr = txtIdPelicula.getText().trim();
         if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una película de la tabla para eliminar.", "Ninguna Selección", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una película de la tabla para eliminar.", "Ninguna Seleccion", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea eliminar esta película?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 int idPelicula = Integer.parseInt(idStr);
-                boolean exito = peliculaDAO.eliminarPelicula(idPelicula); // Asumiendo que tu DAO tiene este método
+                boolean exito = peliculaDAO.eliminarPelicula(idPelicula);
 
                 if (exito) {
                     JOptionPane.showMessageDialog(this, "Película eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -592,46 +604,43 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "El ID de la película no es válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e) {
-                 JOptionPane.showMessageDialog(this, "Error inesperado al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error inesperado al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
-       String terminoBusqueda = JOptionPane.showInputDialog(this, "Ingrese el título de la película a buscar:", "Buscar Película por Título", JOptionPane.QUESTION_MESSAGE);
+        String terminoBusqueda = JOptionPane.showInputDialog(this, "Ingrese el título de la película a buscar:", "Buscar Película por Título", JOptionPane.QUESTION_MESSAGE);
 
-    if (terminoBusqueda != null) { // El usuario ingresó algo (no presionó cancelar ni cerró)
-        if (terminoBusqueda.trim().isEmpty()) {
-            // Si el usuario ingresó solo espacios o nada y presionó OK, cargar todos
-            // Opcional: podrías mostrar un mensaje pidiendo que ingrese un término.
-            // Por ahora, si está vacío después de trim, simplemente recargamos todo.
-            cargarDatosEnTabla(); // Carga todas las películas
-            JOptionPane.showMessageDialog(this, "Mostrando todas las películas.", "Búsqueda Vacía", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            List<peliculaDTO> peliculasResultado = peliculaDAO.buscarPeliculasPorTitulo(terminoBusqueda.trim());
+        if (terminoBusqueda != null) {
+            if (terminoBusqueda.trim().isEmpty()) {
 
-            // Limpiar tabla actual
-            tableModel.setRowCount(0); 
-
-            if (peliculasResultado != null && !peliculasResultado.isEmpty()) {
-                for (peliculaDTO pelicula : peliculasResultado) {
-                    tableModel.addRow(new Object[]{
-                        pelicula.getIdPelicula(),
-                        pelicula.getTitulo(),
-                        pelicula.getAnioEstreno(),
-                        pelicula.getPaisOrigen(),
-                        pelicula.getIdProductora()
-                    });
-                }
-                JOptionPane.showMessageDialog(this, peliculasResultado.size() + " película(s) encontrada(s).", "Resultado de Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosEnTabla();
+                JOptionPane.showMessageDialog(this, "Mostrando todas las peliculas.", "Búsqueda Vacia", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "No se encontraron películas con el título: '" + terminoBusqueda + "'", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+                List<peliculaDTO> peliculasResultado = peliculaDAO.buscarPeliculasPorTitulo(terminoBusqueda.trim());
+
+                tableModel.setRowCount(0);
+
+                if (peliculasResultado != null && !peliculasResultado.isEmpty()) {
+                    for (peliculaDTO pelicula : peliculasResultado) {
+                        tableModel.addRow(new Object[]{
+                            pelicula.getIdPelicula(),
+                            pelicula.getTitulo(),
+                            pelicula.getAnioEstreno(),
+                            pelicula.getPaisOrigen(),
+                            pelicula.getIdProductora()
+                        });
+                    }
+                    JOptionPane.showMessageDialog(this, peliculasResultado.size() + " pelicula(s) encontrada(s).", "Resultado de Busqueda", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontraron películas con el título: '" + terminoBusqueda + "'", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }
-    }
-    // Si terminoBusqueda es null (el usuario presionó Cancelar o cerró el diálogo), no hacemos nada.
-    limpiarCampos(); // Opcional: limpiar campos de texto después de una búsqueda.
+
+        limpiarCampos();
     }//GEN-LAST:event_BtnBuscarActionPerformed
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
@@ -647,9 +656,9 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnProductoraActionPerformed
 
     private void BtnGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGeneroActionPerformed
-       GUIGestionGenero genero = new GUIGestionGenero();
-       genero.setVisible(true);
-       this.dispose();;
+        GUIGestionGenero genero = new GUIGestionGenero();
+        genero.setVisible(true);
+        this.dispose();;
     }//GEN-LAST:event_BtnGeneroActionPerformed
 
     private void BtnDirectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDirectorActionPerformed
@@ -663,6 +672,10 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
         actores.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnActorActionPerformed
+
+    private void btnAgregarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGeneroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarGeneroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -709,10 +722,12 @@ public class GUIGestionPeliculas extends javax.swing.JFrame {
     private javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnProductora;
     private javax.swing.JButton btnActor;
+    private javax.swing.JButton btnAgregarGenero;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

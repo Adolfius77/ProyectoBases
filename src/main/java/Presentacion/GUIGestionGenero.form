@@ -126,7 +126,7 @@
                   </Group>
                   <EmptySpace pref="24" max="32767" attributes="0"/>
               </Group>
-              <Component id="jPanel7" alignment="0" pref="0" max="32767" attributes="0"/>
+              <Component id="jPanel7" alignment="0" pref="722" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">

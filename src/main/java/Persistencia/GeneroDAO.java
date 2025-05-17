@@ -1,7 +1,7 @@
 package Persistencia;
 
 import ConexionBD.DatabaseConnection;
-import DTOS.generoDTO; 
+import DTOS.generoDTO;
 import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -26,7 +26,7 @@ public class GeneroDAO {
             }
             cstmt = conn.prepareCall(sql);
             cstmt.setString(1, genero.getNombre());
-            cstmt.registerOutParameter(2, Types.INTEGER); 
+            cstmt.registerOutParameter(2, Types.INTEGER);
             cstmt.execute();
             int nuevoId = cstmt.getInt(2);
 
@@ -35,14 +35,16 @@ public class GeneroDAO {
                 resultado = true;
                 System.out.println("Género agregado con ID: " + nuevoId);
             } else {
-                 System.out.println("No se pudo agregar el género.");
+                System.out.println("No se pudo agregar el genero.");
             }
         } catch (SQLException e) {
             System.err.println("Error SQL en agregarGenero: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
-                if (cstmt != null) cstmt.close();
+                if (cstmt != null) {
+                    cstmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -60,19 +62,19 @@ public class GeneroDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerGeneroPorId).");
+                System.err.println("Error: No se pudo obtener la conexion (obtenerGeneroPorId).");
                 return null;
             }
             cstmt = conn.prepareCall(sql);
             cstmt.setInt(1, idGenero);
-            
+
             boolean hadResults = cstmt.execute();
             if (hadResults) {
                 rs = cstmt.getResultSet();
                 if (rs.next()) {
                     genero = new generoDTO(
-                        rs.getInt("id_genero"),
-                        rs.getString("nombre")
+                            rs.getInt("id_genero"),
+                            rs.getString("nombre")
                     );
                 }
             }
@@ -81,15 +83,19 @@ public class GeneroDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (cstmt != null) cstmt.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cstmt != null) {
+                    cstmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return genero;
     }
-    
+
     public List<generoDTO> obtenerTodosLosGeneros() {
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -100,8 +106,8 @@ public class GeneroDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerTodosLosGeneros).");
-                return listaGeneros; // Devuelve lista vacía
+                System.err.println("Error: No se pudo obtener la conexion (obtenerTodosLosGeneros).");
+                return listaGeneros;
             }
             cstmt = conn.prepareCall(sql);
             boolean hadResults = cstmt.execute();
@@ -110,8 +116,8 @@ public class GeneroDAO {
                 rs = cstmt.getResultSet();
                 while (rs.next()) {
                     generoDTO genero = new generoDTO(
-                        rs.getInt("id_genero"),
-                        rs.getString("nombre")
+                            rs.getInt("id_genero"),
+                            rs.getString("nombre")
                     );
                     listaGeneros.add(genero);
                 }
@@ -121,8 +127,12 @@ public class GeneroDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (cstmt != null) cstmt.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cstmt != null) {
+                    cstmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -139,26 +149,28 @@ public class GeneroDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (actualizarGenero).");
+                System.err.println("Error: No se pudo obtener la conexion (actualizarGenero).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
             cstmt.setInt(1, genero.getIdGenero());
             cstmt.setString(2, genero.getNombre());
 
-            int filasAfectadas = cstmt.executeUpdate(); 
+            int filasAfectadas = cstmt.executeUpdate();
             if (filasAfectadas > 0) {
                 resultado = true;
                 System.out.println("Género actualizado con ID: " + genero.getIdGenero());
             } else {
-                System.out.println("No se actualizó el género (ID no encontrado o nombre igual).");
+                System.out.println("No se actualizó el genero (ID no encontrado o nombre igual).");
             }
         } catch (SQLException e) {
             System.err.println("Error SQL en actualizarGenero: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
-                if (cstmt != null) cstmt.close();
+                if (cstmt != null) {
+                    cstmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -175,7 +187,7 @@ public class GeneroDAO {
         try {
             conn = DatabaseConnection.getConnection();
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (eliminarGenero).");
+                System.err.println("Error: No se pudo obtener la conexion (eliminarGenero).");
                 return false;
             }
             cstmt = conn.prepareCall(sql);
@@ -184,61 +196,68 @@ public class GeneroDAO {
             int filasAfectadas = cstmt.executeUpdate();
             if (filasAfectadas > 0) {
                 resultado = true;
-                System.out.println("Género eliminado con ID: " + idGenero);
+                System.out.println("Genero eliminado con ID: " + idGenero);
             } else {
                 System.out.println("No se eliminó el género (ID no encontrado).");
             }
         } catch (SQLException e) {
             System.err.println("Error SQL en eliminarGenero: " + e.getMessage());
-     
+
             e.printStackTrace();
         } finally {
             try {
-                if (cstmt != null) cstmt.close();
+                if (cstmt != null) {
+                    cstmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return resultado;
     }
+
     public List<generoDTO> buscarGenerosPorNombre(String nombreGenero) {
-    Connection conn = null;
-    CallableStatement cstmt = null;
-    ResultSet rs = null;
-    List<generoDTO> generosEncontrados = new ArrayList<>();
-    String sql = "{CALL sp_buscar_generos_por_nombre(?)}";
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        List<generoDTO> generosEncontrados = new ArrayList<>();
+        String sql = "{CALL sp_buscar_generos_por_nombre(?)}";
 
-    try {
-        conn = DatabaseConnection.getConnection();
-        if (conn == null) {
-            System.err.println("Error: No se pudo obtener la conexión (buscarGenerosPorNombre).");
-            return generosEncontrados;
-        }
-        cstmt = conn.prepareCall(sql);
-        cstmt.setString(1, nombreGenero);
+        try {
+            conn = DatabaseConnection.getConnection();
+            if (conn == null) {
+                System.err.println("Error: No se pudo obtener la conexion (buscarGenerosPorNombre).");
+                return generosEncontrados;
+            }
+            cstmt = conn.prepareCall(sql);
+            cstmt.setString(1, nombreGenero);
 
-        boolean hadResults = cstmt.execute();
-        if (hadResults) {
-            rs = cstmt.getResultSet();
-            while (rs.next()) {
-                generoDTO genero = new generoDTO(
-                    rs.getInt("id_genero"),
-                    rs.getString("nombre")
-                );
-                generosEncontrados.add(genero);
+            boolean hadResults = cstmt.execute();
+            if (hadResults) {
+                rs = cstmt.getResultSet();
+                while (rs.next()) {
+                    generoDTO genero = new generoDTO(
+                            rs.getInt("id_genero"),
+                            rs.getString("nombre")
+                    );
+                    generosEncontrados.add(genero);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQL en buscarGenerosPorNombre: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cstmt != null) {
+                    cstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
-    } catch (SQLException e) {
-        System.err.println("Error SQL en buscarGenerosPorNombre: " + e.getMessage());
-        e.printStackTrace();
-    } finally {
-        try {
-            if (rs != null) rs.close();
-            if (cstmt != null) cstmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return generosEncontrados;
     }
-    return generosEncontrados;
-}
 }

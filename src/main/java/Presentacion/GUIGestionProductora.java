@@ -33,7 +33,7 @@ public class GUIGestionProductora extends javax.swing.JFrame {
     public GUIGestionProductora() {
         initComponents(); 
         setLocationRelativeTo(null);
-        setTitle("Gestión de Productoras"); 
+        setTitle("Gestion de Productoras"); 
 
         productoraDAO = new ProductoraDAO();
 
@@ -42,6 +42,7 @@ public class GUIGestionProductora extends javax.swing.JFrame {
 
       
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
                     int filaSeleccionada = jTable1.getSelectedRow();
@@ -61,7 +62,7 @@ public class GUIGestionProductora extends javax.swing.JFrame {
     }
 
     private void configurarTabla() {
-        String[] columnas = {"ID Productora", "Nombre", "País"};
+        String[] columnas = {"ID Productora", "Nombre", "Pais"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -553,7 +554,7 @@ public class GUIGestionProductora extends javax.swing.JFrame {
         String paisProductora = txtPais.getText().trim();
 
         if (nombreProductora.isEmpty() || paisProductora.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre y el país de la productora son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre y el pais de la productora son obligatorios.", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -563,11 +564,11 @@ public class GUIGestionProductora extends javax.swing.JFrame {
             boolean exito = productoraDAO.agregarProductora(nuevaProductora);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Productora agregada correctamente con ID: " + nuevaProductora.getIdProductora(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Productora agregada correctamente con ID: " + nuevaProductora.getIdProductora(), "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosEnTabla();
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al agregar la productora.", "Error de Inserción", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al agregar la productora.", "Error de Insercion", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error inesperado al agregar productora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -587,7 +588,7 @@ public class GUIGestionProductora extends javax.swing.JFrame {
         String paisProductora = txtPais.getText().trim();
 
         if (nombreProductora.isEmpty() || paisProductora.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre y el país son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre y el país son obligatorios.", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -597,11 +598,11 @@ public class GUIGestionProductora extends javax.swing.JFrame {
             boolean exito = productoraDAO.actualizarProductora(productoraModificada);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Productora modificada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Productora modificada correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosEnTabla();
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al modificar la productora (verifique si el ID existe).", "Error de Modificación", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al modificar la productora (verifique si el ID existe).", "Error de Modificacion", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El ID de la productora debe ser un número (generalmente seleccionado de la tabla).", "Error de Formato", JOptionPane.ERROR_MESSAGE);
@@ -623,18 +624,18 @@ public class GUIGestionProductora extends javax.swing.JFrame {
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta productora?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta productora?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 int idProductora = Integer.parseInt(idStr);
-                boolean exito = productoraDAO.eliminarProductora(idProductora); // Asumiendo que tu DAO tiene este método
+                boolean exito = productoraDAO.eliminarProductora(idProductora); 
 
                 if (exito) {
-                    JOptionPane.showMessageDialog(this, "Productora eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Productora eliminada correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                     cargarDatosEnTabla();
                     limpiarCampos();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Error al eliminar la productora (ID no encontrado o tiene películas asociadas).", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la productora (ID no encontrado o tiene peliculas asociadas).", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "El ID de la productora no es válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
@@ -658,7 +659,7 @@ public class GUIGestionProductora extends javax.swing.JFrame {
                     for (productoraDTO productora : productorasResultado) {
                         tableModel.addRow(new Object[]{productora.getIdProductora(), productora.getNombre(), productora.getPais()});
                     }
-                    JOptionPane.showMessageDialog(this, productorasResultado.size() + " productora(s) encontrada(s).", "Resultado de Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, productorasResultado.size() + " productora(s) encontrada(s).", "Resultado de Busqueda", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "No se encontraron productoras con el nombre: '" + terminoBusqueda + "'", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
                 }

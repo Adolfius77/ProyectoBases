@@ -5,10 +5,13 @@
 package Presentacion;
 
 import com.mysql.cj.xdevapi.Statement;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -290,66 +293,101 @@ public class InicioSesion extends javax.swing.JFrame {
         String contrasena = new String(Contra.getPassword()).trim();
 
         if (correoElectronico.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(new JFrame(), "porfavor ingrese todos los datos", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese correo y contraseña.", "Datos Incompletos", JOptionPane.WARNING_MESSAGE);
             return;
+        }
 
-    }//GEN-LAST:event_BtnIniciarSesionActionPerformed
-        String SUrl = "jdbc:MySQL://localhost:3306/StreamingDB";
-        String SUser = "root";
-        String Spass = "adolfo";
+        Connection conn = null;
+        CallableStatement cstmtUsuario = null;
+        CallableStatement cstmtAdmin = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(SUrl, SUser, Spass);
-            String sqlUsuario = "SELECT * FROM usuario WHERE correoElectronico = ? AND contrasena = ?";
-            String sqlAdmin = "SELECT * FROM admin WHERE correoElectronico = ? AND contrasena = ?";
-            PreparedStatement pstmUsuario = con.prepareStatement(sqlUsuario);
-            PreparedStatement pstmAdmin = con.prepareStatement(sqlAdmin);
+            conn = ConexionBD.DatabaseConnection.getConnection();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Error de conexion a la base de datos.", "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            pstmUsuario.setString(1, correoElectronico);
-            pstmUsuario.setString(2, contrasena);
+            boolean loginExitoso = false;
+            String tipoUsuario = "";
 
-            pstmAdmin.setString(1, correoElectronico);
-            pstmAdmin.setString(2, contrasena);
+         
+            String sqlUsuario = "{CALL sp_validar_usuario(?, ?, ?, ?, ?)}"; 
+            cstmtUsuario = conn.prepareCall(sqlUsuario);
+            cstmtUsuario.setString(1, correoElectronico);
+            cstmtUsuario.setString(2, contrasena); 
+            cstmtUsuario.registerOutParameter(3, Types.INTEGER);     
+            cstmtUsuario.registerOutParameter(4, Types.VARCHAR);    
+            cstmtUsuario.registerOutParameter(5, Types.BOOLEAN);    
 
-            ResultSet rsUsuario = pstmUsuario.executeQuery();
-            ResultSet rsAdmin = pstmAdmin.executeQuery();
+            cstmtUsuario.execute();
 
-                //usuario
-            if (rsUsuario.next()) {
-                JOptionPane.showMessageDialog(new JFrame(), "inicio de sesion como usuario exitoso", " exito", JOptionPane.INFORMATION_MESSAGE);
-                inicio ini = new inicio();
-                ini.setVisible(true);
-                this.dispose();
-               //admin
-            } else if (rsAdmin.next()) {
-                JOptionPane.showMessageDialog(new JFrame(), "inicio de sesion como admin exitoso", " exito", JOptionPane.INFORMATION_MESSAGE);
-                Admin ad = new Admin();
-                ad.setVisible(true);
-                this.dispose();
+            boolean esUsuarioValido = cstmtUsuario.getBoolean(5);
+
+            if (esUsuarioValido) {
+                loginExitoso = true;
+                tipoUsuario = "Usuario";
             } else {
-                JOptionPane.showMessageDialog(new JFrame(), " credenciales invalidas vuelva a intentarlo", " error", JOptionPane.ERROR_MESSAGE);
+               
+                if (cstmtUsuario != null) {
+                    cstmtUsuario.close();
+                }
+
+                String sqlAdmin = "{CALL sp_validar_admin(?, ?, ?, ?, ?)}"; 
+                cstmtAdmin = conn.prepareCall(sqlAdmin);
+                cstmtAdmin.setString(1, correoElectronico);
+                cstmtAdmin.setString(2, contrasena);
+                cstmtAdmin.registerOutParameter(3, Types.INTEGER);   
+                cstmtAdmin.registerOutParameter(4, Types.VARCHAR);    
+                cstmtAdmin.registerOutParameter(5, Types.BOOLEAN);    
+
+                cstmtAdmin.execute();
+
+                boolean esAdminValido = cstmtAdmin.getBoolean(5);
+
+                if (esAdminValido) {
+                    loginExitoso = true;
+                    tipoUsuario = "Administrador";
+                }
+            }
+
+           
+            if (loginExitoso) {
+                JOptionPane.showMessageDialog(this, "Inicio de sesion como " + tipoUsuario + " exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                GUIAdminInicio panelAdmin = new GUIAdminInicio();
+                panelAdmin.setVisible(true);
+                this.dispose(); 
+            } else {
+                
+                JOptionPane.showMessageDialog(this, "Credenciales invalidas. Vuelva a intentarlo.", "Error de Autenticacion", JOptionPane.ERROR_MESSAGE);
                 TxtcorreoElectronico.setText("");
                 Contra.setText("");
             }
-            if (rsUsuario != null) {
-                rsUsuario.close();
-            }
-            if (rsAdmin != null) {
-                rsUsuario.close();
-            }
-            rsUsuario.close();
-            pstmUsuario.close();
-            con.close();
 
+        } catch (SQLException e) {
+            System.err.println("Error SQL en BtnIniciarSesionActionPerformed: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al iniciar sesion: " + e.getMessage(), "Error SQL", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("error al iniciar sesion" + e.getMessage());
-            JOptionPane.showMessageDialog(new JFrame(), "error al iniciar sesion intentelo nuevamente", "error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Error general en BtnIniciarSesionActionPerformed: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error inesperado al iniciar sesion: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         } finally {
-            java.util.Arrays.fill(Contra.getPassword(), '0');
+            try {
+                if (cstmtUsuario != null && !cstmtUsuario.isClosed()) {
+                    cstmtUsuario.close();
+                }
+                if (cstmtAdmin != null && !cstmtAdmin.isClosed()) {
+                    cstmtAdmin.close();
+                }
+              
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            java.util.Arrays.fill(Contra.getPassword(), '0'); 
         }
 
-    }
+    }//GEN-LAST:event_BtnIniciarSesionActionPerformed
 
     /**
      * @param args the command line arguments

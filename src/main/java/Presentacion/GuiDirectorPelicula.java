@@ -4,9 +4,12 @@
  */
 package Presentacion;
 
+import DTOS.actorDTO;
 import DTOS.generoDTO;
 import DTOS.peliculaDTO;
+import Persistencia.ActoresDAO;
 import Persistencia.GeneroDAO;
+import Persistencia.PeliculaActorDAO;
 import Persistencia.PeliculaGeneroDAO;
 import Persistencia.añadirPeliculaDAO;
 import java.awt.Color;
@@ -27,73 +30,72 @@ import javax.swing.table.TableColumn;
  *
  * @author USER
  */
-public class GuiGeneroPelicula2 extends javax.swing.JFrame {
+public class GuiDirectorPelicula extends javax.swing.JFrame {
 
-    private añadirPeliculaDAO peliculaDAO;
-    private GeneroDAO generoDAO;
-    private PeliculaGeneroDAO peliculaGeneroDAO;
+   private añadirPeliculaDAO peliculaDAO;
+    private ActoresDAO actoresDAO;
+    private PeliculaActorDAO peliculaActorDAO;
 
-    private DefaultTableModel modeloTablaGeneros; 
-    private DefaultTableModel modeloTablaPeliculaSeleccionada;
-    private peliculaDTO peliculaSeleccionadaActual;
+    private DefaultTableModel modeloTablaPeliculasAsignables;
+    private DefaultTableModel modeloTablaActorSeleccionado; 
+    
+    private actorDTO actorSeleccionadoActual;
 
     /**
      * Creates new form GuiGeneroPelicula2
      */
-    public GuiGeneroPelicula2() {
-        initComponents();
+    public GuiDirectorPelicula() {
+      initComponents(); 
         setLocationRelativeTo(null);
-        setTitle("Asignar Generos a Pelicula");
+        setTitle("Asignar Peliculas a Actor");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Inicializar DAOs
         peliculaDAO = new añadirPeliculaDAO();
-        generoDAO = new GeneroDAO();
-        peliculaGeneroDAO = new PeliculaGeneroDAO();
+        actoresDAO = new ActoresDAO();
+       
+        peliculaActorDAO = new PeliculaActorDAO(); 
 
-        configurarTablaGeneros();
-        configurarTablaPeliculaSeleccionada();
+        configurarTablaPeliculasAsignables();
+        configurarTablaActorSeleccionado();
 
-        txtTitulo.setEditable(false);
-        txtTitulo.setBackground(new Color(230, 230, 230));
+        if (txtNombre != null) { 
+            txtNombre.setEditable(false);
+            txtNombre.setBackground(new Color(230, 230, 230));
+        }
+        
     }
 
-    private void configurarTablaPeliculaSeleccionada() {
-        String[] columnasPelicula = {"ID Pelicula", "Título", "Año Estreno", "País Origen", "ID Productora"};
-        modeloTablaPeliculaSeleccionada = new DefaultTableModel(columnasPelicula, 0) {
+    private void configurarTablaActorSeleccionado() {
+        String[] columnasActor = {"ID Actor", "Nombre", "Nacionalidad"};
+        modeloTablaActorSeleccionado = new DefaultTableModel(columnasActor, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // No editable
+                return false;
             }
         };
         if (jTable3 != null) { 
-            jTable3.setModel(modeloTablaPeliculaSeleccionada);
+            jTable3.setModel(modeloTablaActorSeleccionado);
         }
     }
 
-    private void configurarTablaGeneros() {
-        String[] columnas = {"Asignar", "ID Género", "Nombre del Genero"};
-        modeloTablaGeneros = new DefaultTableModel(columnas, 0) {
+    private void configurarTablaPeliculasAsignables() {
+        String[] columnasPeliculas = {"Asignar", "ID Pelicula", "Título de la Pelicula"};
+        modeloTablaPeliculasAsignables = new DefaultTableModel(columnasPeliculas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) {
-                    return Boolean.class;
-                }
+                if (columnIndex == 0) return Boolean.class;
                 return super.getColumnClass(columnIndex);
             }
-
             @Override
             public boolean isCellEditable(int row, int column) {
                 return column == 0;
             }
         };
-        
-        if (jTable1 != null) {
-            jTable1.setModel(modeloTablaGeneros);
-            TableColumn idColG = jTable1.getColumnModel().getColumn(1);
-            idColG.setMinWidth(0);
-            idColG.setMaxWidth(0);
-            idColG.setPreferredWidth(0);
+        if (jTable1 != null) { 
+            jTable1.setModel(modeloTablaPeliculasAsignables);
+            TableColumn idCol = jTable1.getColumnModel().getColumn(1);
+            idCol.setMinWidth(0); idCol.setMaxWidth(0); idCol.setPreferredWidth(0);
             TableColumn checkCol = jTable1.getColumnModel().getColumn(0);
             checkCol.setPreferredWidth(60);
             TableColumn nombreCol = jTable1.getColumnModel().getColumn(2);
@@ -102,66 +104,74 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
     }
 
     private void btnBuscarPeliculaActionPerformed(java.awt.event.ActionEvent evt) {
-        String criterioBusqueda = txtPelicula.getText().trim();
+ String criterioBusqueda = txtIdDirector.getText().trim();
         if (criterioBusqueda.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID o parte del título de la pelicula.", "Criterio Vacio", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ingrese ID o Nombre del Actor.", "Criterio Vacio", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (modeloTablaGeneros != null) {
-            modeloTablaGeneros.setRowCount(0);
-        }
-        if (txtTitulo != null) {
-            txtTitulo.setText("");
-        }
-        peliculaSeleccionadaActual = null;
+        if (modeloTablaPeliculasAsignables != null) modeloTablaPeliculasAsignables.setRowCount(0);
+        if (modeloTablaActorSeleccionado != null) modeloTablaActorSeleccionado.setRowCount(0);
+        if (txtNombre != null) txtNombre.setText("");
+        actorSeleccionadoActual = null;
 
         try {
-            int idPelicula = Integer.parseInt(criterioBusqueda);
-            peliculaSeleccionadaActual = peliculaDAO.obtenerPeliculaPorID(idPelicula);
+            int idActor = Integer.parseInt(criterioBusqueda);
+            actorSeleccionadoActual = actoresDAO.obtenerActorPorId(idActor);
         } catch (NumberFormatException e) {
-            List<peliculaDTO> peliculasEncontradas = peliculaDAO.buscarPeliculasPorTitulo(criterioBusqueda);
-            if (peliculasEncontradas != null && !peliculasEncontradas.isEmpty()) {
-                if (peliculasEncontradas.size() == 1) {
-                    peliculaSeleccionadaActual = peliculasEncontradas.get(0);
+            List<actorDTO> actoresEncontrados = actoresDAO.buscarActoresPorNombre(criterioBusqueda);
+            if (actoresEncontrados != null && !actoresEncontrados.isEmpty()) {
+                if (actoresEncontrados.size() == 1) {
+                    actorSeleccionadoActual = actoresEncontrados.get(0);
                 } else {
-                    // Manejar múltiples resultados: mostrar un diálogo para seleccionar
-                    Object[] opcionesPeliculas = peliculasEncontradas.toArray();
-                    peliculaDTO elegida = (peliculaDTO) JOptionPane.showInputDialog(this,
-                            "Se encontraron varias peliculas, seleccione una:", "Multiples Peliculas Encontradas",
-                            JOptionPane.PLAIN_MESSAGE, null, opcionesPeliculas, opcionesPeliculas[0]);
-                    peliculaSeleccionadaActual = elegida;
+                    Object[] opciones = actoresEncontrados.stream()
+                                          .map(a -> a.getIdActor() + ": " + a.getNombre())
+                                          .toArray();
+                    String seleccion = (String) JOptionPane.showInputDialog(this,
+                            "Se encontraron varios actores, seleccione uno:", "Múltiples Actores",
+                            JOptionPane.PLAIN_MESSAGE, null, opciones, opciones[0]);
+                    if (seleccion != null && !seleccion.isEmpty()) {
+                        try {
+                            int idSel = Integer.parseInt(seleccion.split(":")[0].trim());
+                            actorSeleccionadoActual = actoresEncontrados.stream()
+                                                        .filter(a -> a.getIdActor() == idSel)
+                                                        .findFirst().orElse(null);
+                        } catch (Exception ex) {  }
+                    }
                 }
             }
         }
 
-        if (peliculaSeleccionadaActual != null) {
-            txtPelicula.setText(String.valueOf(peliculaSeleccionadaActual.getIdPelicula()));
-            txtTitulo.setText(peliculaSeleccionadaActual.getTitulo());
-            cargarGenerosParaAsignacionActual();
+        if (actorSeleccionadoActual != null) {
+            txtIdDirector.setText(String.valueOf(actorSeleccionadoActual.getIdActor()));
+            txtNombre.setText(actorSeleccionadoActual.getNombre());
+
+            modeloTablaActorSeleccionado.addRow(new Object[]{
+                actorSeleccionadoActual.getIdActor(),
+                actorSeleccionadoActual.getNombre(),
+                actorSeleccionadoActual.getNacionalidad()
+            });
+            cargarPeliculasParaAsignacionActual();
         } else {
-            JOptionPane.showMessageDialog(this, "Pelicula no encontrada.", "No Encontrada", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Actor no encontrado.", "No Encontrado", JOptionPane.WARNING_MESSAGE);
         }
     }
+    private void cargarPeliculasParaAsignacionActual() {
+        if (modeloTablaPeliculasAsignables == null || actorSeleccionadoActual == null) return;
+        modeloTablaPeliculasAsignables.setRowCount(0);
 
-    private void cargarGenerosParaAsignacionActual() {
-        if (modeloTablaGeneros == null || peliculaSeleccionadaActual == null) {
-            return;
-        }
-        modeloTablaGeneros.setRowCount(0);
+        List<peliculaDTO> todasLasPeliculas = peliculaDAO.obtenerTodasLasPeliculas();
+        List<peliculaDTO> peliculasAsignadas = peliculaActorDAO.obtenerPeliculasDeActor(actorSeleccionadoActual.getIdActor());
 
-        List<generoDTO> todosLosGeneros = generoDAO.obtenerTodosLosGeneros();
-        List<generoDTO> generosAsignadosAPelicula = peliculaGeneroDAO.obtenerGenerosDePelicula(peliculaSeleccionadaActual.getIdPelicula());
-
-        Set<Integer> idsGenerosAsignados = new HashSet<>();
-        if (generosAsignadosAPelicula != null) {
-            idsGenerosAsignados.addAll(generosAsignadosAPelicula.stream().map(generoDTO::getIdGenero).collect(Collectors.toList()));
+        Set<Integer> idsPeliculasAsignadas = new HashSet<>();
+        if (peliculasAsignadas != null) {
+            idsPeliculasAsignadas.addAll(peliculasAsignadas.stream().map(peliculaDTO::getIdPelicula).collect(Collectors.toList()));
         }
 
-        if (todosLosGeneros != null) {
-            for (generoDTO genero : todosLosGeneros) {
-                boolean asignado = idsGenerosAsignados.contains(genero.getIdGenero());
-                modeloTablaGeneros.addRow(new Object[]{asignado, genero.getIdGenero(), genero.getNombre()});
+        if (todasLasPeliculas != null) {
+            for (peliculaDTO pelicula : todasLasPeliculas) {
+                boolean asignado = idsPeliculasAsignadas.contains(pelicula.getIdPelicula());
+                modeloTablaPeliculasAsignables.addRow(new Object[]{asignado, pelicula.getIdPelicula(), pelicula.getTitulo()});
             }
         }
     }
@@ -186,13 +196,14 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         BtnAgrear = new javax.swing.JButton();
+        guiGeneroPelicula21 = new Presentacion.GuiGeneroPelicula2();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtTitulo = new javax.swing.JTextField();
-        txtPelicula = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtIdDirector = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -200,6 +211,7 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         tablapeli = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
         btnInicio = new javax.swing.JButton();
@@ -264,11 +276,11 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setText("Agregar genero a peliculas");
+        jLabel1.setText("Agregar directores a peliculas");
 
-        jLabel2.setText("ingrese el id de la pelicula ala que quiere agregarle un genero");
+        jLabel2.setText("ingrese el id del director ala que quiere agregar a una pelicula");
 
-        jLabel3.setText("Titulo:");
+        jLabel3.setText("Nombre");
 
         btnBuscar.setText("buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -288,8 +300,8 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtPelicula, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(txtTitulo))
+                    .addComponent(txtIdDirector, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(txtNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBuscar)
                 .addGap(48, 48, 48))
@@ -300,63 +312,82 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        jLabel4.setText("Generos para la pelicula");
+        jLabel4.setText("Lista de peliculas");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "nombre del genero"
+                "nombre del actor", "nacionalidad"
             }
         ));
         tabla.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setHeaderValue("nombre del actor");
+        }
+
+        tablapeli.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                tablapeliComponentAdded(evt);
+            }
+        });
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "id_pelicula", "titulo", "anio", "pais", "id_productora"
+                "id_actor", "nombre", "nacionalidad"
             }
         ));
         tablapeli.setViewportView(jTable3);
+
+        jLabel6.setText("Actores");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabla, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tabla, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablapeli, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(tablapeli, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tablapeli, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
@@ -447,113 +478,113 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
     private void btnMoverAdisponiblesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoverAdisponiblesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMoverAdisponiblesActionPerformed
-
+    
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (peliculaSeleccionadaActual == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, busque y seleccione una película primero.", "Película no Seleccionada", JOptionPane.WARNING_MESSAGE);
+        if (actorSeleccionadoActual == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, busque y seleccione un ACTOR primero.", "Actor no Seleccionado", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-       
         int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Desea guardar los cambios de géneros para la pelicula: " + peliculaSeleccionadaActual.getTitulo() + "?",
+                "¿Desea guardar las asignaciones de películas para el actor: " + actorSeleccionadoActual.getNombre() + "?",
                 "Confirmar Guardado", JOptionPane.YES_NO_OPTION);
 
         if (confirm != JOptionPane.YES_OPTION) {
             return;
         }
 
-        boolean exitoRemover = peliculaGeneroDAO.removerTodosGenerosDePelicula(peliculaSeleccionadaActual.getIdPelicula());
+        // Necesitas un método en PeliculaActorDAO para remover todas las películas de un actor
+        boolean exitoRemover = peliculaActorDAO.removerTodasPeliculasDeActor(actorSeleccionadoActual.getIdActor());
         if (!exitoRemover) {
-          
-            JOptionPane.showMessageDialog(this, "Error al limpiar generos previos de la pelicula. Verifique que el Stored Procedure 'sp_remover_todos_generos_de_pelicula' exista y funcione correctamente.", "Error Guardando", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al limpiar películas previas asignadas al actor. Verifique el Stored Procedure 'sp_remover_todas_peliculas_de_actor'.", "Error Guardando", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        boolean todosAsignadosCorrectamente = true;
-        int generosAsignadosCount = 0;
-        for (int i = 0; i < modeloTablaGeneros.getRowCount(); i++) {
-            Boolean asignado = (Boolean) modeloTablaGeneros.getValueAt(i, 0);
+        boolean todasAsignadasCorrectamente = true;
+        int peliculasAsignadasCount = 0;
+        for (int i = 0; i < modeloTablaPeliculasAsignables.getRowCount(); i++) {
+            Boolean asignado = (Boolean) modeloTablaPeliculasAsignables.getValueAt(i, 0);
             if (asignado != null && asignado) {
-                int idGenero = (int) modeloTablaGeneros.getValueAt(i, 1);
-                if (!peliculaGeneroDAO.asignarGeneroAPelicula(peliculaSeleccionadaActual.getIdPelicula(), idGenero)) {
-                    todosAsignadosCorrectamente = false;
-                    System.err.println("Fallo al asignar genero ID: " + idGenero + " a pelicula ID: " + peliculaSeleccionadaActual.getIdPelicula());
-                   
+                int idPelicula = (int) modeloTablaPeliculasAsignables.getValueAt(i, 1);
+                // El método en PeliculaActorDAO sería asignarActorAPelicula o asignarPeliculaAActor, la semántica es la misma
+                if (!peliculaActorDAO.asignarActorAPelicula(idPelicula, actorSeleccionadoActual.getIdActor())) { // o peliculaActorDAO.asignarPeliculaAActor(actorSeleccionadoActual.getIdActor(), idPelicula)
+                    todasAsignadasCorrectamente = false;
+                    System.err.println("Fallo al asignar PELÍCULA ID: " + idPelicula + " al ACTOR ID: " + actorSeleccionadoActual.getIdActor());
                 } else {
-                    generosAsignadosCount++;
+                    peliculasAsignadasCount++;
                 }
             }
         }
 
-        if (todosAsignadosCorrectamente) {
-            JOptionPane.showMessageDialog(this, generosAsignadosCount + " genero(s) asignados/actualizados para: " + peliculaSeleccionadaActual.getTitulo(), "exito", JOptionPane.INFORMATION_MESSAGE);
+        if (todasAsignadasCorrectamente) {
+            JOptionPane.showMessageDialog(this, peliculasAsignadasCount + " película(s) asignadas/actualizadas para el actor: " + actorSeleccionadoActual.getNombre(), "exito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Algunos generos no pudieron ser asignados. Revise la consola y verifique los Stored Procedures correspondientes.", "Error Parcial", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Algunas peliculas no pudieron ser asignadas. Revise la consola.", "Error Parcial", JOptionPane.WARNING_MESSAGE);
         }
-        cargarGenerosParaAsignacionActual(); 
+        cargarPeliculasParaAsignacionActual();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String criterioBusqueda = txtPelicula.getText().trim();
-        if (criterioBusqueda.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID o parte del titulo de la película.", "Criterio Vacio", JOptionPane.WARNING_MESSAGE);
+        String criterioBusquedaActor = txtIdDirector.getText().trim(); // Se busca un ACTOR
+        if (criterioBusquedaActor.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un ID o nombre del ACTOR.", "Criterio Vacio", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (modeloTablaGeneros != null) {
-            modeloTablaGeneros.setRowCount(0);
+        if (modeloTablaPeliculasAsignables != null) {
+            modeloTablaPeliculasAsignables.setRowCount(0);
         }
-        if (modeloTablaPeliculaSeleccionada != null) { 
-            modeloTablaPeliculaSeleccionada.setRowCount(0);
+        if (modeloTablaActorSeleccionado != null) {
+            modeloTablaActorSeleccionado.setRowCount(0);
         }
-        if (txtTitulo != null) {
-            txtTitulo.setText("");
+        if (txtNombre != null) {
+            txtNombre.setText("");
         }
-        peliculaSeleccionadaActual = null;
+        actorSeleccionadoActual = null;
 
         try {
-            int idPelicula = Integer.parseInt(criterioBusqueda);
-            peliculaSeleccionadaActual = peliculaDAO.obtenerPeliculaPorID(idPelicula);
+            int idActor = Integer.parseInt(criterioBusquedaActor);
+            actorSeleccionadoActual = actoresDAO.obtenerActorPorId(idActor);
         } catch (NumberFormatException e) {
-            List<peliculaDTO> peliculasEncontradas = peliculaDAO.buscarPeliculasPorTitulo(criterioBusqueda);
-            if (peliculasEncontradas != null && !peliculasEncontradas.isEmpty()) {
-                if (peliculasEncontradas.size() == 1) {
-                    peliculaSeleccionadaActual = peliculasEncontradas.get(0);
+            List<actorDTO> actoresEncontrados = actoresDAO.buscarActoresPorNombre(criterioBusquedaActor);
+            if (actoresEncontrados != null && !actoresEncontrados.isEmpty()) {
+                if (actoresEncontrados.size() == 1) {
+                    actorSeleccionadoActual = actoresEncontrados.get(0);
                 } else {
-                    Object[] opcionesPeliculas = peliculasEncontradas.stream()
-                            .map(p -> p.getIdPelicula() + ": " + p.getTitulo())
+                    Object[] opcionesActores = actoresEncontrados.stream()
+                            .map(a -> a.getIdActor() + ": " + a.getNombre())
                             .toArray();
                     String seleccion = (String) JOptionPane.showInputDialog(this,
-                            "Se encontraron varias películas, seleccione una:", "Multiples Películas Encontradas",
-                            JOptionPane.PLAIN_MESSAGE, null, opcionesPeliculas, opcionesPeliculas[0]);
-                    if (seleccion != null) {
-                        int idSeleccionado = Integer.parseInt(seleccion.split(":")[0]);
-                        peliculaSeleccionadaActual = peliculasEncontradas.stream()
-                                .filter(p -> p.getIdPelicula() == idSeleccionado)
-                                .findFirst().orElse(null);
+                            "Se encontraron varios actores, seleccione uno:", "Múltiples Actores Encontrados",
+                            JOptionPane.PLAIN_MESSAGE, null, opcionesActores, opcionesActores[0]);
+                    if (seleccion != null && !seleccion.isEmpty()) {
+                        try {
+                            int idSeleccionado = Integer.parseInt(seleccion.split(":")[0].trim());
+                            actorSeleccionadoActual = actoresEncontrados.stream()
+                                    .filter(a -> a.getIdActor() == idSeleccionado)
+                                    .findFirst().orElse(null);
+                        } catch (NumberFormatException ex) {
+                            actorSeleccionadoActual = null;
+                        }
                     }
                 }
             }
         }
 
-        if (peliculaSeleccionadaActual != null) {
-            txtPelicula.setText(String.valueOf(peliculaSeleccionadaActual.getIdPelicula()));
-            txtTitulo.setText(peliculaSeleccionadaActual.getTitulo());
+        if (actorSeleccionadoActual != null) {
+            txtIdDirector.setText(String.valueOf(actorSeleccionadoActual.getIdActor())); 
+            txtNombre.setText(actorSeleccionadoActual.getNombre());
 
-            // NUEVO: Llenar la tabla de película seleccionada (jTable3)
-            if (modeloTablaPeliculaSeleccionada != null) {
-                modeloTablaPeliculaSeleccionada.addRow(new Object[]{
-                    peliculaSeleccionadaActual.getIdPelicula(),
-                    peliculaSeleccionadaActual.getTitulo(),
-                    peliculaSeleccionadaActual.getAnioEstreno(),
-                    peliculaSeleccionadaActual.getPaisOrigen(),
-                    peliculaSeleccionadaActual.getIdProductora()
+            if (modeloTablaActorSeleccionado != null) {
+                modeloTablaActorSeleccionado.addRow(new Object[]{
+                    actorSeleccionadoActual.getIdActor(),
+                    actorSeleccionadoActual.getNombre(),
+                    actorSeleccionadoActual.getNacionalidad()
                 });
             }
-            cargarGenerosParaAsignacionActual();
+            cargarPeliculasParaAsignacionActual();
         } else {
-            JOptionPane.showMessageDialog(this, "Pelicula no encontrada.", "No Encontrada", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Actor no encontrado.", "No Encontrado", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -562,6 +593,10 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void tablapeliComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_tablapeliComponentAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablapeliComponentAdded
 
     /**
      * @param args the command line arguments
@@ -580,20 +615,23 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiGeneroPelicula2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiDirectorPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiGeneroPelicula2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiDirectorPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiGeneroPelicula2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiDirectorPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiGeneroPelicula2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiDirectorPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiGeneroPelicula2().setVisible(true);
+                new GuiDirectorPelicula().setVisible(true);
             }
         });
     }
@@ -606,11 +644,13 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
     private javax.swing.JButton btnInicio;
     private javax.swing.JButton btnMoverAdisponibles;
     private javax.swing.JButton btnMoverAsignados;
+    private Presentacion.GuiGeneroPelicula2 guiGeneroPelicula21;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -625,7 +665,7 @@ public class GuiGeneroPelicula2 extends javax.swing.JFrame {
     private javax.swing.JList<String> listaGeneros;
     private javax.swing.JScrollPane tabla;
     private javax.swing.JScrollPane tablapeli;
-    private javax.swing.JTextField txtPelicula;
-    private javax.swing.JTextField txtTitulo;
+    private javax.swing.JTextField txtIdDirector;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

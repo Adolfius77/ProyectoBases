@@ -29,7 +29,7 @@ public class añadirPeliculaDAO {
             cstmt.setInt(2, pelicula.getAnioEstreno());
             cstmt.setString(3, pelicula.getPaisOrigen());
             cstmt.setInt(4, pelicula.getIdProductora());
-            cstmt.registerOutParameter(5, Types.INTEGER); // p_nueva_id_pelicula
+            cstmt.registerOutParameter(5, Types.INTEGER); 
 
             cstmt.execute();
             int nuevoId = cstmt.getInt(5);
@@ -43,7 +43,7 @@ public class añadirPeliculaDAO {
             System.err.println("Error SQL en agregarPelicula: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Cerrar cstmt
+      
             try {
                 if (cstmt != null) {
                     cstmt.close();
@@ -55,7 +55,7 @@ public class añadirPeliculaDAO {
         return resultado;
     }
 
-    public peliculaDTO obtenerPeliculaPorID(int idPelicula) { // Coincide con el llamado del panel
+    public peliculaDTO obtenerPeliculaPorID(int idPelicula) {
         Connection conn = null;
         CallableStatement cstmt = null;
         ResultSet rs = null;
@@ -139,7 +139,7 @@ public class añadirPeliculaDAO {
             System.err.println("Error SQL en obtenerTodasLasPeliculas: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Cerrar rs, cstmt
+           
             try {
                 if (rs != null) {
                     rs.close();
@@ -186,7 +186,7 @@ public class añadirPeliculaDAO {
             System.err.println("Error SQL en actualizarPelicula: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Cerrar cstmt
+          
             try {
                 if (cstmt != null) {
                     cstmt.close();
@@ -198,7 +198,7 @@ public class añadirPeliculaDAO {
         return resultado;
     }
 
-    public boolean eliminarPelicula(int idPelicula) { // Cambiado para aceptar solo ID
+    public boolean eliminarPelicula(int idPelicula) { 
         Connection conn = null;
         CallableStatement cstmt = null;
         boolean resultado = false;
@@ -243,7 +243,7 @@ public class añadirPeliculaDAO {
     try {
         conn = DatabaseConnection.getConnection();
         if (conn == null) {
-            System.err.println("Error: No se pudo obtener la conexión (buscarPeliculasPorTitulo).");
+            System.err.println("Error: No se pudo obtener la conexion (buscarPeliculasPorTitulo).");
             return peliculasEncontradas;
         }
 
@@ -298,7 +298,7 @@ public class añadirPeliculaDAO {
             }
         }
     } catch (SQLException e) {
-        System.err.println("Error al obtener películas por género: " + e.getMessage());
+        System.err.println("Error al obtener peliculas por genero: " + e.getMessage());
         e.printStackTrace();
     }
     return peliculas;
@@ -313,7 +313,7 @@ public class añadirPeliculaDAO {
 
             if (conn == null) {
                 System.err.println("Error: No se pudo obtener la conexión (obtenerPeliculasPorActor).");
-                return peliculas; // Devuelve lista vacía
+                return peliculas; 
             }
 
             cstmt.setInt(1, idActor);
@@ -333,7 +333,7 @@ public class añadirPeliculaDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error SQL al obtener películas por actor: " + e.getMessage());
+            System.err.println("Error SQL al obtener peliculas por actor: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
@@ -354,8 +354,8 @@ public class añadirPeliculaDAO {
              CallableStatement cstmt = conn.prepareCall(sql)) {
 
             if (conn == null) {
-                System.err.println("Error: No se pudo obtener la conexión (obtenerPeliculasPorProductora).");
-                return peliculas; // Devuelve lista vacía
+                System.err.println("Error: No se pudo obtener la conexion (obtenerPeliculasPorProductora).");
+                return peliculas; 
             }
             
             cstmt.setInt(1, idProductora);
@@ -369,7 +369,7 @@ public class añadirPeliculaDAO {
                         rs.getString("titulo"),
                         rs.getInt("anio_estreno"),
                         rs.getString("pais_origen"),
-                        rs.getInt("id_productora") // Esta ya es parte de la tabla pelicula
+                        rs.getInt("id_productora") 
                     );
                     peliculas.add(pelicula);
                 }
@@ -380,7 +380,7 @@ public class añadirPeliculaDAO {
         } finally {
             try {
                 if (rs != null) rs.close();
-                 // CallableStatement se cierra automáticamente por el try-with-resources
+             
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -409,7 +409,7 @@ public class añadirPeliculaDAO {
             }
         }
     } catch (SQLException e) {
-        System.err.println("Error al obtener películas por rango de años: " + e.getMessage());
+        System.err.println("Error al obtener peliculas por rango de años: " + e.getMessage());
         e.printStackTrace();
     }
     return peliculas;

@@ -29,27 +29,28 @@ public class GUIGestionActores extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
 
     public GUIGestionActores() {
-        initComponents(); // Llama al initComponents que proporcionaste
+        initComponents(); 
         setLocationRelativeTo(null);
-        setTitle("Gestión de Actores"); // Título de la ventana
+        setTitle("Gestión de Actores"); 
 
         actoresDAO = new ActoresDAO();
 
         configurarTabla();
         cargarDatosEnTabla();
 
-        // Listener para la selección de filas en la JTable
+      
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
                     int filaSeleccionada = jTable1.getSelectedRow();
 
-                    // Obtener datos del actor de la fila seleccionada
-                    int idActorSel = (int) tableModel.getValueAt(filaSeleccionada, 0); // Columna ID Actor
-                    String nombreSel = tableModel.getValueAt(filaSeleccionada, 1).toString(); // Columna Nombre
-                    String nacionalidadSel = tableModel.getValueAt(filaSeleccionada, 2).toString();   // Columna Nacionalidad
+                 
+                    int idActorSel = (int) tableModel.getValueAt(filaSeleccionada, 0); 
+                    String nombreSel = tableModel.getValueAt(filaSeleccionada, 1).toString(); 
+                    String nacionalidadSel = tableModel.getValueAt(filaSeleccionada, 2).toString();   
 
-                    // Llenar los campos de texto
+                    
                     txtIdActor.setText(String.valueOf(idActorSel));
                     txtNombre.setText(nombreSel);
                     txtNacionalidad.setText(nacionalidadSel);
@@ -59,11 +60,11 @@ public class GUIGestionActores extends javax.swing.JFrame {
     }
 
     private void configurarTabla() {
-        String[] columnas = {"ID Actor", "Nombre", "Nacionalidad"}; // Columnas para la tabla de actores
+        String[] columnas = {"ID Actor", "Nombre", "Nacionalidad"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Celdas no editables directamente
+                return false; 
             }
         };
         jTable1.setModel(tableModel);
@@ -464,20 +465,20 @@ private void cargarDatosEnTabla() {
         String nacionalidadActor = txtNacionalidad.getText().trim();
 
         if (nombreActor.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre del actor es obligatorio.", "Campo Vacío", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre del actor es obligatorio.", "Campo Vacio", JOptionPane.WARNING_MESSAGE);
             return;
         }
-         if (nacionalidadActor.isEmpty()) { // Nacionalidad también puede ser obligatoria
-            JOptionPane.showMessageDialog(this, "La nacionalidad del actor es obligatoria.", "Campo Vacío", JOptionPane.WARNING_MESSAGE);
+         if (nacionalidadActor.isEmpty()) { 
+            JOptionPane.showMessageDialog(this, "La nacionalidad del actor es obligatoria.", "Campo Vacio", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            actorDTO nuevoActor = new actorDTO(0, nombreActor, nacionalidadActor); // ID 0 para nuevo actor
+            actorDTO nuevoActor = new actorDTO(0, nombreActor, nacionalidadActor);
             boolean exito = actoresDAO.agregarActor(nuevoActor);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Actor agregado correctamente con ID: " + nuevoActor.getIdActor(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Actor agregado correctamente con ID: " + nuevoActor.getIdActor(), "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosEnTabla();
                 limpiarCampos();
             } else {
@@ -501,7 +502,7 @@ private void cargarDatosEnTabla() {
         String nacionalidadActor = txtNacionalidad.getText().trim();
 
         if (nombreActor.isEmpty() || nacionalidadActor.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El nombre y la nacionalidad son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El nombre y la nacionalidad son obligatorios.", "Campos Vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -511,7 +512,7 @@ private void cargarDatosEnTabla() {
             boolean exito = actoresDAO.actualizarActor(actorModificado);
 
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Actor modificado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Actor modificado correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosEnTabla();
                 limpiarCampos();
             } else {
@@ -533,18 +534,18 @@ private void cargarDatosEnTabla() {
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
         String idStr = txtIdActor.getText().trim();
         if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un actor de la tabla para eliminar.", "Ningún Actor Seleccionado", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un actor de la tabla para eliminar.", "Ningun Actor Seleccionado", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este actor?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea eliminar este actor?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
                 int idActor = Integer.parseInt(idStr);
                 boolean exito = actoresDAO.eliminarActor(idActor);
 
                 if (exito) {
-                    JOptionPane.showMessageDialog(this, "Actor eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Actor eliminado correctamente.", "exito", JOptionPane.INFORMATION_MESSAGE);
                     cargarDatosEnTabla();
                     limpiarCampos();
                 } else {
@@ -573,7 +574,7 @@ private void cargarDatosEnTabla() {
                     for (actorDTO actor : actoresResultado) {
                         tableModel.addRow(new Object[]{actor.getIdActor(), actor.getNombre(), actor.getNacionalidad()});
                     }
-                    JOptionPane.showMessageDialog(this, actoresResultado.size() + " actor(es) encontrado(s).", "Resultado de Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, actoresResultado.size() + " actor(es) encontrado(s).", "Resultado de Busqueda", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "No se encontraron actores con el nombre: '" + terminoBusqueda + "'", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
                 }
